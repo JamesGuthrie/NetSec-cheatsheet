@@ -4,12 +4,27 @@
 
 \pgra{Filtering:} ingress (incoming traffic), egress (outgoing traffic). \textit{Default policy:} accept or reject. \textit{Deny access:} drop: silently drop packet, reject: drop packet and inform sender with ICMP
 
+\includegraphics[width=9cm]{images/netfilter}
+
 \pgra{Firewall configuration} Netfilter (Linux packet filter), use {\tt iptables} to configure (can do deep packet inspection, examine state, NAT). Firewall contains chains, linked to tables, that contain rules. \\
 Preconfigured tables: filter (drop or accept), NAT (change src. or dst. address), mangle (change packet in more generalised ways), raw (specialised processing).\\
 Rule targets: accept, drop, queue, return, masquerade (only NAT). Examples: \\
 {\tt iptables -A -i eth0 -m state --state ESTABLISHED,}\\
 {\tt RELATED -j ACCEPT ... -p tcp -s 0/0 -d 0/0}\\
 {\tt --destination -port 80 --syn -j ACCEPT}
+
+\pgra{Firewall commands:} and description
+
+\begin{tabular}{p{0.35\linewidth}p{0.6\linewidth}}
+Command & Description \\
+\hline
+\hline
+ACCEPT & Accept packet \\
+DROP & Discard packet \\
+QUEUE & Hand packet off to userspace process \\
+RETURN & Stop processing in this chain, return to previous \\
+MASQUERADE & only in nat table: rewrite src. or dest. address with that of outgoing/incoming address \\
+\end{tabular}
 
 \pgra{Organizational Challenges:} Large rulesets, big organizations, conflicting goal: networking (provides connectivity) vs. security staff (protect and disrupt connectivity).
 
@@ -30,6 +45,15 @@ Type & Advantage & Disadvantage \\
 \item Request patterns (SQL injection, XSS, etc.)
 \item Static or dynamic blacklisting/whitelisting
 \item False positive problem
+}
+
+\pgra{Firewall attack/bypass techniques:}
+\bitem{
+\item IP source address spoofing (doesn't work against TCP - handshake)
+\item Artificial Fragmentation (port no. only in first fragment or overwritten - requires full reassembly)
+\item Explot Vulnerabilities (in firewall SW/OS or target appl.)
+\item DoS (State explosion - FW fallback policy?)
+\item Tunneling/Covert Channel (use ICMP ping packets/DNS requests)
 }
 
 \pgra{Firewall detection by port scanning:}
@@ -91,6 +115,26 @@ Dimensions & \multicolumn{2}{c}{Method} \\
 \emph{Point} of observation & \textbf{Host:} By software running on the host, or device monitoring one host  & \textbf{Network:} By data collectors attached at strategic places in the network \\
 \hline
 \emph{Method} of observation & \textbf{Signature:} Comparison of observed events against database of signature of malicious events & \textbf{Behavior:} Detection of deviation from normal state; requires knowledge of ground truth (hard) \\
+}
+
+\pgra{Flows vs. Packets:} IDS can analyse traffic flows instead of individial packets
+\bitem{
+\item[+] Scalability: packet capture and analysis at > 1Gbps not feasible
+\item[+] Encryption: move to https everywhere -> packet contents useless
+\item[-] Aggregation leads to loss of information
+\item[-] No context for analysis
+}
+
+\pgra{Host vs. Network-based IDS}
+\bitem{
+\item Network-based: easy to deploy, one sensor monitors multiple machine, protects unknown machines, no context: more false positives, performance issues
+\item Host-based: harder to deploy, one sensor per monitored machine, context information (OS, apps): less false positives
+}
+
+\pgra{Signature vs. Behaviour-based IDS}
+\bitem{
+\item Signature-based: precision due to DB of malicious signatures (less false positives), incapable of detecting unknown attacks (more false negatives), automatic generation of signatures still research topic
+\item Behaviour-based: detect unkown attacks with anomaly detection, difficult to establish what is "normal", more false positives, (potentially) less false negatives, area of research
 }
 
 \section{DNS security}
