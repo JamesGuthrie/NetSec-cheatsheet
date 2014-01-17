@@ -285,5 +285,5 @@ Instead, do the following:
 
 \textit{Injection defense:} Bound variables will be escaped automatically by the server. The server inserts the escaped values at the appropriate places into the statement template before execution. A hint must be provided to the server for the type of bound variable, to create an appropriate conversion.
 
-\paragraph{Other attack strategies} Fuzzing (insert {\tt ' " ) # || + >} into every entry field), delay query, order by $n$, get metadata: {\tt sysobjects, syscolumns} \\
+\paragraph{Other attack strategies} Fuzzing (insert {\tt ' " ) \# || + >} into every entry field), delay query, order by $n$, get metadata: {\tt sysobjects, syscolumns} \\
 IDS evasion: try all the flavors of {\tt OR 1=1}, insert whitespaces, comments in between statements, wildcards, concatenation, etc.
