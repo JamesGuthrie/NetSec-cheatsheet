@@ -1,0 +1,22 @@
+\definecolor{titlegray}{gray}{1}
+
+\makeatletter
+\renewcommand{\maketitle}{
+  \thispagestyle{plain}
+  \begin{center}
+    \fcolorbox{black}{titlegray}{
+      \parbox{185mm}{
+        \begin{center}
+          \textcolor{black}{
+            \vspace{-2mm}
+            \@title \\
+            \vspace{2mm}
+            \@author
+            \vspace{10mm}
+          }
+        \end{center}
+      }
+    }
+  \end{center}
+}
+\makeatother

@@ -1,0 +1,323 @@
+\section{Vulnerability lifecycle \& security}
+
+\paragraph{Why is network security an issue?}
+\begin{itemize}
+\item Economy and life more and more depends on the internet
+\item Distributed information systems have become critical infrastructures
+\item Open systems: physical security is no longer sufficient
+\item Insecurity driven by organized crime.
+\item Huge and fast growing internet user base (2 billion), increasing risk
+\end{itemize}
+
+\paragraph{Security has become critical:}
+\begin{itemize}
+\item Security is one of the hidden building blocks of the internet.
+\item The limits of security will become the limits of the internet
+\item Growing online business attracts more attackers, attackers increase
+the cost of doing business online
+\item But the opportunities of being on the internet far outweigh the risks
+\end{itemize}
+\emph{Several decades of security problems, attacker knowledge
+required has gone down dramatically (script kiddies)}
+
+\paragraph{Asymmetric threat \& leverage:}
+Attacker tries a few
+exploits on a few systems, defender must
+secure all systems against all exploits. New
+opportunities for leverage all the time.
+
+\textbf{Leverage:} You may reach 100 million
+potential subjects (customers, or victims).
+We can‘t count on previous constraints (e.g.
+travel cost, cost of physical shipment) to limit
+the effectiveness of an attacker. Scary
+aspect of modern technology.
+
+\paragraph{Attacker Motivation:}
+\begin{itemize}
+\item Ego: show off, impress
+\item Revenge, destruction, creation of fear
+\item Criminal intent: blackmail, fraud, e-banking
+\item Acquisition of computing and network
+resources: Botnets
+\item Acquisition of sensitive information:
+espionage
+\end{itemize}
+
+\paragraph{What can attackers do?}
+\begin{itemize}
+\item Attack flow of information
+\item Attack services to achieve DoS
+\item Attack infrastructure (DNS, ARP)
+\item Gain access to services
+\item Infiltrate security protocols/processes
+\item Change system functions
+\item Modify web pages
+\item Hijack user sessions
+\item Assume false identity
+\item Use social engineering to establish trust
+\item Break crypto
+\end{itemize}
+
+\textbf{Where are the attack targets?} Hackers attack us where we sit: Client-side
+attacks dominate. Attacks of all shapes and
+sizes. Data stored on end-points is often
+most valuable and the least protected.
+
+\paragraph{Security Concept - CIA triad:} The CIA triad is given by
+
+\begin{tabular}{p{0.3\linewidth}p{0.3\linewidth}p{0.3\linewidth}}
+\textbf{C}onfidentiality & \textbf{I}ntegrity & \textbf{A}vailability \\
+\end{tabular}
+(and more: Authenticity, Accountability, non
+repudiation, privacy)
+
+\paragraph{Attack Classification}
+\begin{itemize}
+\item Passive attacks: \emph{Confidentiality:} Compromise content, traffic analysis
+\item Active attacks: \emph{Availability:} DoS, \\ \emph{Integrity and Authenticity:} Modification, Fabrication, Replay
+\end{itemize}
+
+\paragraph{Communication channel mode}
+Not authentic/authentic, Not confidential/confidential
+
+\emph{Secure = authentic and confidential}
+
+Secure communication using insecure channel: Attacker has full
+access to physical channel, knows all mechanisms and protocols,
+does not know any secret keys.
+
+Security can be implemented at different OSI layers
+
+\paragraph{Insecurity Landscape}
+Complexity is our worst enemy: Security of a
+system = security of its weakest link
+
+Complexity increases fast (more features,
+code size, connectivity, embedded devices)
+
+\emph{We are not willing to sacrifice features for
+security.}
+
+\paragraph{Vulnerabilities} 
+A \emph{security vulnerability} refers to a weakness
+in a system allowing an attacker to violate
+CIA of the system.
+
+There may be disagreement in concrete
+cases: ``it's a feature not a vulnerability''.
+
+The security landscape is determined by
+vulnerabilities.
+
+CVE = standardized vulnerability names
+CVE = Common Vulnerability Exposure:
+aims to standardize the names for all
+publicly known vulnerabilities and security
+exposures, de facto standard (ex.
+CVE-2007-0943) (38000+ since 1995)
+
+Every relevant security issue will get a CVE
+number assigned.
+
+\paragraph{Vulnerability Lifecycle}
+Creation $\rightarrow$ discovery $\rightarrow$ exploit $\rightarrow$ disclosure $\rightarrow$ patch available $\rightarrow$ patch installed
+
+\textbf{Risk time intervals:} pre-disclosure risk $\rightarrow$ post-disclosure risk $\rightarrow$ post-patch risk $\rightarrow$ day of disclosure = zero day
+
+\begin{itemize}
+\item pre-disclosure risk: time from discovery to disclosure, only few know
+\item post-disclosure risk: time from disclosure to patch, public aware of
+risk but still in danger
+\item post-patch risk: time from patch availability to patch installation
+\end{itemize}
+
+\pgra{Zero-day vulnerability:} A zero-day (zero-hour, day zero) vulnerability is a vulnerability in a computer application that has been previously unknown, allowing attacks which take advantage of this lack of ``prior knowledge''. There are zero days between the time the vulnerability is discovered an the first attack. The developers have had zero days to address and patch the vulnerability.
+
+\paragraph{From discovery to disclosure}
+\begin{itemize}
+\item  Less than zero day: Vulnerabilities not yet
+known to the public are systematically used
+by cybercriminals, government agencies,...
+\item There is a market for new vulnerabilities:
+Zero Day initiative of TippingPoint,
+iDefense, black market, pricing from 1000
+to 75000\$
+\end{itemize}
+Exploit availability jumps from 15\% to 80\%
+at disclosure. At disclosure, less than 50\% of
+vulnerabilities have a patch. The bad are
+consistently faster than the good
+
+\paragraph{Risk analysis:}
+\begin{enumerate}
+\item What assets are we trying to protect?
+\item What are the risks of those assets?
+\item How well does the security solution handle those risks
+\item What other risks does the solution cause?
+\item What costs and trade-offs does the
+solution have?
+\end{enumerate}
+Finally: Is the trade-off worth it?
+
+\paragraph{Risk management}
+Security is relative (many risks possible). Options: avoid risk (give up), decrease risk
+(technology), transfer risk (insurance),
+accept risk. Take risk at the right place.
+
+\textbf{Security is a trade-off}: No perfect security, we can have as much security as we want, we make decisions
+every day about these trade-offs.
+
+\section{Identity \& Authentication}
+\paragraph{Definition:} An identity specifies a principal (unique entity). Examples: Individuals (e.g. person name), physical objects (e.g.
+computer - network address, router, smart cart, airplanes), logical
+objects (software - application name/version, URL), groups of
+principals
+
+\paragraph{Identity Theft:} Identity theft is a crime in which impostors obtain key
+pieces of \emph{personally identifying information (PII)} such as social
+security numbers (SSN), birth date, etc. and use them for their own
+personal gain or in order to do harm.
+
+\pgra{Prevention and Reaction:} Don‘t make PII available to untrusted
+people. React fast if you suspect theft of your identity. Buy an identity
+theft protection insurance if you are exposed. (fastest growing crime
+in US, every 3 seconds an identity is stolen. 43\% of victims knew the
+perpetrator)
+
+\textbf{Variants:} Financial Identity Theft, Criminal Identity Theft, Identity
+Cloning, Business/Commercial Identity Theft
+
+\begin{tabular}{p{0.28\linewidth}p{0.62\linewidth}}
+\textbf{Access control:} & The process of exerting control over who can interact with a resource \\
+\hline
+\hline
+\textbf{Identification} & The process of establishing who someone or something claims to be for example by providing the system with a username \\
+\hline
+\textbf{Authentication} & The process of confirming a claimed identity, for example by verifying the user's password in the system \\
+\hline
+\textbf{Authorization} & The process of regulating what a user can do in the system, for example whether he can send a print job or not \\
+\end{tabular}
+
+\paragraph{Authentication:} Process of verifying an identity claim of an entity. Variants:
+\begin{itemize}
+\item Something an entity knows (PW, PIN)
+\item Something an entity has (key card)
+\item Something an entity is (biometric attributes) 
+\item (a location where an entity is)
+\item an ability an entity has (signing)
+\end{itemize}
+
+\begin{tabular}{|p{0.6\linewidth}|p{0.05\linewidth}|p{0.05\linewidth}|p{0.1\linewidth}|}
+\multicolumn{4}{l}{\textbf{Authentication solutions}} \\
+\hline
+Type & Is & Has & Knows \\
+\hline
+\hline
+\multicolumn{4}{l}{\textit{Weak authentication}} \\
+\hline
+iTan (list with label/alphanumeric types) & & X & \\
+\hline
+mTan (access to second communication channel) & & X & \\
+\hline
+Psylock (way of typing on a keyboard) & X & & \\
+\hline
+PassFaces (set of five faces) & & & X \\
+\hline
+SecLookOn (set or rules) & & & X \\
+\hline
+\multicolumn{4}{l}{\textit{Strong authentication}} \\
+\hline
+Internet Passport (fingerprint, device with crypt. keys) & X & X & \\
+\hline
+Digital Signature (smart card, PIN) & & X & X \\
+\hline
+SuisseID (smartcard or USB device, PIN) & & X & X \\
+\hline
+\end{tabular}
+
+\paragraph{Authentication Techniques}
+Biometrics: Fingerprint, retina scan, etc.\\
+Crossover Error Rate: The lower, the better (where false reject rate = false accept rate) \\
+Passwords: multi vs. single use (tokens) \\
+Cryptographic keys: passphrase to unlock keys, memory/smart cards \\
+\emph{Weak authentication:} means checking only
+one authentication criteria \\
+\emph{Strong authentication:} means checking two or more authentication criteria. (ex. ATM machines, savings account, digital signature, access to vault)
+
+\paragraph{Authentication by a trusted third party}
+Verification: compare image and/or signature with holder of passport, check document authenticity (security features) \\
+Digital counterpart: Digital certificates by CA
+
+\paragraph{OpenID}
+Open standard for decentralized user authentication. OpenID allows
+you to use an existing account to sign in to multiple websites,
+without needing to create new passwords. Your password is only
+given to your identity provider and that provider confirms identity to
+the websites you visit.
+
+(1. User enters OpenID, 2. Discovery, 3.
+Authentication, 4. Approval, 4.a Change Attributes, 5. Send
+Attributes, 6. Validation)
+
+\paragraph{OAuth}
+\emph{Traditional:} A web user (resource owner) grants a printing service
+(client) access to her protected photos stored at a photo sharing
+service (resource server) by sharing her password with the printing
+service. The problems:
+\begin{itemize}
+ \item Third-party applications are required to store the password for
+future use
+ \item servers are required to support PW authentication
+ \item third-party applications gain overly broad access
+  \item resource owners cannot revoke access without changing PW
+\end{itemize}
+
+\emph{OAuth:}
+
+\begin{tabular}{c|ccc|c}
+  Client  &  & Auth. request & $\rightarrow$ & Resource \\ 
+  & $\leftarrow$ & Auth. grant &  & Owner \\ 
+ &  & Auth. grant & $\rightarrow$ & Authorization \\ 
+   & $\leftarrow$ & Access token &  & Server \\ 
+  &  & Access token & $\rightarrow$ & Resource \\ 
+ & $\leftarrow$ & Protected &  & Server \\ 
+ &  & Resource &  &  \\ 
+\end{tabular} 
+
+\textbf{Anonymity}
+
+\begin{tabular}{lcr}
+\emph{Authenticated} & & \emph{Anonymous} \\
+Identity & Pseudonymity & Anonymity \\
+\hline
+Public & Non-public & Unlinkable \\
+pseudonyms & pseudonyms & pseudonyms \\
+\end{tabular}
+
+\textbf{Anonymous networks:} Onion routing, Mixnets. \\
+\textbf{Attacks against anonymity:} Traceback, Collusion, Traffic analysis, logging
+
+\paragraph{3D Secure (3DS)}
+Protocol used to authenticate online card transactions. Global framework. Reduces operational expense. No specialized cardholder SW or HW. Is extensible into emerging channels (mobile). Centralized archive of payment authentications.
+
+Three Domains (3D): Issuer Domain, Interoperability Domain, Acquirer Domain
+
+\textbf{Goal: less online fraud, but liability shift to customer side!}
+
+\textbf{Problems:} pop-up blockers ($\to$ iframe), hidden security clues, activation during
+shopping, liability shift, weak authentication, PW reset procedure not specified, privacy issues. Improvements: Some banks use per transaction SMS codes instead of PWs.
+
+\paragraph{802.1x}
+Client-server based access control protocol (WLAN). Standard data link layer protocol. 
+Creates two virtual access points at each port.(controlled/uncontrolled) 1. User activates link 2. Authentication server sends an authentication challenge 3. User responds 4a. Authentication server checks response 4b Switch opens controlled port \\
+ Supplicant, Authenticator, Auth. Server
+
+\paragraph{802.1x EAP}
+Extensible Authentication Protocol, identification framework, supports multiple
+methods (MD5, OTP, TLS) \\
+Access control = Authentication, Authorization
+
+\textbf{802.1x Benefits/Limitations:} + standard-based technology, + extends authentication, + controls exercised at link layer, + interoperates in wired, wireless scenarios\\
+- authenticator identification, - man-in-the-middle
+

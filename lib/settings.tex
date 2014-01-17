@@ -1,0 +1,49 @@
+% FANCYHEADER EINSTELLUNGEN
+\newcommand{\setfancy}{
+  \fancyhead{}
+  \fancyfoot{}
+  \fancyhead[L]{
+    {
+      \small\scshape Network Security Summary
+    }
+  }
+  \fancyhead[R]{{\small\scshape Lennart Elsen \& Tobias Bamert}}
+  \fancyhead[C]{{\thepage}}
+  \renewcommand{\headrulewidth}{0.1pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+% MULTICOLS EINSTELLUNGEN
+\setlength{\columnsep}{6mm}
+\setlength{\columnseprule}{.1pt}
+% Column Separation Rules
+\newcommand{\csr}{\setlength{\columnseprule}{.1pt}}
+\newcommand{\nocsr}{\setlength{\columnseprule}{0pt}}
+% Spaltenumbruch
+\newcommand{\brk}{\columnbreak}
+
+% TEXTHÖHE
+\setlength{\textheight}{265mm}
+
+% ABSTAND ZUR FUSSZEILE
+\setlength{\footskip}{1mm}
+\setlength{\headsep}{5mm}
+
+% KEIN EINZUG ZU BEGINN EINES NEUEN PARAGRAPHEN
+\setlength{\parindent}{0mm}
+
+% DEHNUNG ALLER ARRAYS (bessere Lesbarkeit)
+\renewcommand{\arraystretch}{1.2}
+% TIEFE DES INHALTSVERZEICHNISSES
+\setcounter{tocdepth}{3}
+
+% ABSTAND NACH TITELN
+\titlespacing*{\subsection}{0pt}{-5pt}{-5pt}[0pt]
+\titlespacing*{\subsubsection}{0pt}{-5pt}{-5pt}[0pt]
+\titlespacing*{\section}{0pt}{-5pt}{-5pt}[0pt]
+\titlespacing*{\paragraph}{-5pt}{-5pt}{5pt}[0pt]
+
+% AUFZÄHLUNGEN
+\setlength{\itemsep}{-5mm}
+\setlength{\topsep}{-5mm}
+\setlength{\partopsep}{-5mm}

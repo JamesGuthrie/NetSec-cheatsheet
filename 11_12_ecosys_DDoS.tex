@@ -1,0 +1,130 @@
+\section{Security ecosystem \& endpoint security}
+
+\pgra{Security Ecosystem:} Model of the complex interactions and processes with respect to vulnerabilities, many players interact, some with diverging interests. Complex system with feedback loops:
+
+\begin{tabular}{ccccc}
+& & \textit{Discoverer} & & \\
+\$ & $\leftarrow$ & Discovery & $\rightarrow$ & \$ \\
+$\downarrow$ & & $\downarrow$ & & $\downarrow$ \\
+Black market & $\swarrow$ & $\downarrow$ & $\searrow$ & White market \\
+Criminal & & Publication & & Vendor \\
+\textbf{Exploit} & & $\downarrow$ & & \textbf{Patch} \\
+& & SIP & & \\
+& & \textbf{Disclosure} & & \\
+& & Public & & \\
+\end{tabular}
+
+\pgra{Vulnerability counts:} Vulnerabilities don't go away or decrease, despite massive investments in security. Ten vendors are responsible for about 45\% of the vulnerabilities from 2009 to 2010. Products of the vendors are in everyday use. 58\% of the vulnerabilities found are rated highly or moderately critical. Exploitable from remote is the most prevalent attack vector.
+
+\pgra{Discoverer:} The risk exposure time of the public is heavily influenced by the discoverers decision.
+
+\pgra{Software users, the public:} Everybody that uses software affected by a vulnerability comprise the public. These users are in need of accurate and validated security information to asses their risk and to protect their systems until a patch is released by the vendor.
+
+\pgra{Cybercriminal:} Cybercriminals develop or buy exploit material in order to make use of a vulnerability and typically install malicious software on the computers of victims to enable or expand their business.
+
+\pgra{Users' risk management challenge:} Where do software users get timely and accurate information about security issues to asses their risk? \\
+\emph{Software Vendor:} biased, tendency not to report details \\
+\emph{Security Community:} rumors?, source not trusted
+\emph{Security information providers:} Several private and government organizations specialize in collecting and publishing vulnerability intelligence. SIPs efficiently monitor primary sources, validate the content found and publish their findings in a consistent format.
+
+\pgra{SIP}
+\bitem{
+\item All but one of the examined SIPs are first contributors
+\item High dynamics in first 48 hours
+\item Dynamics correlate with time zone, typical office hours
+\item No evidence of copying found
+\item SIPs act mostly independent and complement each other
+}
+
+Independent and trusted Security Information Providers act like the free press in an open society. They are efficient watchdogs to expose important issues to the public. Issues addressed by SIP are hard to deny. Essential role for the well-being and functioning of the security ecosystem.
+
+\pgra{Vulnerability Discovery:} The vulnerability discoverer controls the game and determines to whom, when and how the information is passed. \\
+Discoverer incentives: economics, ethics, resources, past experience, publicity, legal constraints
+
+\pgra{Full Disclosure Debate:} You discovered a risk: What do you do now?
+
+\bitem{
+\item Keep information quiet: nobody except me knows vulnerability, but are you really the first and only one to discover the vulnerability
+\item Quietly alert vendor: the vendor would be grateful and patch, but many vulnerabilities remain unfixed for years, vendors have no motivation might deny even threat researchers 
+\item Immediate public full disclosure: once the vulnerability is published, public pressure gives the vendor a strong incentive to fix the problem, but you arm the criminals (more harm)
+\item Sell the information: maximize your profit, sell to whom? Highest bidder? Known market? Sell to vendor?
+}
+
+\pgra{Full Disclosure vs. Bug Secrecy}
+Democratization is important: Users can‘t make security decisions if a vulnerability exists and they don‘t know about it. Detailed information is required: only FD or exploit code makes vendors take notice, proof of concept helps verifying that the patches really work as intended.\\
+\textit{The full disclosure process helps much more than it hurts.}
+
+\pgra{Exploits, proof of concept:} Step 1: researcher finds a vulnerability and reports it to vendor, vendor doesn't take vulnerability serious.\\
+Step 2: researcher writes exploit or POC, vendor can't downplay vulnerability anymore.\\
+\textbf{This happened all too often.}\\
+\bitem{
+\item[(1)] Notify vendor
+\item[(2)] Collaborate
+\item[(3)] Coordinated Disclosure
+}
+If the vendor is not cooperative $\to$ Full Disclosure. \\
+For most vulnerabilities patched, the vendor credits an external discoverer. Vendors cannot prevent discoveries, good relationship with security community important.
+
+\pgra{Coordinated disclosure:} Patch release and vulnerability disclosure falling on the
+same day imply that the vendor had ahead notification of the vulnerability (or discovered it internally).
+
+\pgra{Vulnerability Markets:} Information about security vulnerabilities can be a valuable asset, vulnerability information is traded in both the underground black market and the commercial services white market.\\
+\emph{White Market:} Vulnerability is bought and forwarded to vendor, following coordinated disclosure process. Players: Security companies using the information to stay ahead of the threat. Vulnerability programs, iDefense, TippingPoint steadily increase the share of vulnerabilities reported to vendors. Considerable difference of white market shares among vendors.\\
+\textit{Black Market:} Vulnerability is bought and exploited, no notification to vendor. Players: Cybercriminals, (Governments?)
+
+\section{Availability \& DDoS}
+
+\subs{Availability}
+
+\pgra{Service Level Agreement:} Many nines:
+
+\lbtab{0.35}{0.2}{0.3}{
+Reliability level & Uptime \% & Downtime/year \\
+\hline
+\hline
+Two nines & 99\% & 3.5 days \\
+Three nines & 99.9\% & 9 hours \\
+Four nines & 99.99\% & 53 minutes \\
+Five nines & 99.999\% & 5 minutes \\
+Six nines & 99.9999\% & 31 seconds \\
+}
+
+How to achieve 99.9999\%:
+
+\begin{tabular}{p{0.2\linewidth}p{0.7\linewidth}}
+\textbf{High redundancy} & No single point of failure, $N+2$ systems running under normal operatio, i.e. still running if 2 systems are down, $\geq 2$ geographically diverse locations for data centers, $\geq 2$ internet, Don't forget: fast fail-over is key! Evict unhealthy nodes immediately \\
+\hline
+\textbf{Failure resiliency} & System can tolerate temporary component failures, graceful degradation upon failures \\
+\hline
+\textbf{Over provisioning} & E.g. plan bandwidth and resources to cover most
+extreme peak loads during attack or high load, know how to get additional resources fast when
+needed, use scalable content distribution networks \\
+\hline
+\textbf{Close monitoring and fast recovery} & Immediate failure detection, immediate alerting (pager, SMS), experts 24/7 on on-call duty to respond to alerts, fast recovery (have documentation, tools, etc. ready)\\
+\end{tabular}
+
+\subs{DDoS}
+
+\pgra{Definition DoS:} A DoS (Denial of Service) attack is an explicit attempt by attackers to prevent legitimate users to access a specific service.\\
+\textit{Attack techniques:} Resource starvation, spoofing, amplification, reflector attack, distributed attack.\\
+DoS attacks target the ``A'' in the CIA triad.
+
+\pgra{DoS Attack: Resource Starvation:} Storage: Request excessive memory CPU: Request excessive number of CPU intensive tasks. Network: saturate bandwidth
+
+\pgra{SYN Flood Attack:} TCP three-way handshake: Server receives a SYN packet, sends back a SYN ACK, Server waits for ACK of SYN ACK $\to$ connection established. Server keeps state for each connection attempt.\\
+\textit{Attack:} SYN flooding with spoofed IP addresses. Resource starvation DoS attack, once connection table is full, server unable to handle legitimate requests. Countermeasure: SYN cookies: particular choice of initial TCP sequence numbers by TCP servers. Encode state in a data structure and send it to client, which will present it at next interaction (sequence numbers).
+
+\pgra{DDoS Reflector Attack:} Attacker sends request with spoofed IP of victim to a vulnerable service (reflector). Victim gets all the responses. (e.g. reflector attack by a botnet) 
+
+\pgra{Broadcast adresses - Smurf Attack:} Ping a broadcast address with spoofed IP of a victim as src. All hosts of the network respond to the victim. Victim is overwhelmed. $\to$ Ignore pings to broadcast address, ignore ICMP echo requests from outside the local network.
+
+\pgra{DoS countermeasures:} Prevention: secure systems (firewall, IDS/IPS, etc.) secure protocols (SYN cookies, etc.) resource accounting (resources only for trusted clients), resource multiplication (in case of attack), late resource binding.\\
+Reaction: detect, react
+
+\pgra{Compression bombs:} Small archive file, which results in huge amounts of data when decompressed. Use of naive anti-virus scanners and decompressors cause DoS when processing such files. \textit{Effect:} Out of memory or disk space during decompression. Process reading compressed data seems to hang forever.\\
+\textit{Solution:} Restrict decompressed size to not exceed available memory/disk space. Perform streaming scan (possibly DoS on CPU). Limit depth of analysis of recursively packed archives. Time-out if decompression takes too long.
+
+\pgra{Mail Bounce Amplification:} Mail server {\tt target.com} generates mail bounces, for every single failed recipient it bounces a full copy of the msg.\\
+\textit{Attack:} Mail with reply-to address as {\tt x@victim.com}, set {\tt x@target.com} as recipient, set $N$ invalid {\tt Bcc:} addresses with {\tt ..@target.com}.
+
+\pgra{DNS Amplification Attacks:} DNS reflector attack: send small DNS requests to recursive servers, spoof source address to come from victim, DNS servers will flood victim with larger UDP packets (GB/s). Although UDP packets limited to 512 bytes, request initiator can advertise a larger buffer size (up to factor 60).

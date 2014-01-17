@@ -1,0 +1,174 @@
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+
+%\newcommand{\eo}{\varepsilon_0}
+%\newcommand{\er}{\varepsilon_r}
+%\newcommand{\e}{\varepsilon}
+\newcommand{\uo}{\mu_0}
+\newcommand{\ur}{\mu_r}
+\newcommand{\ind}{\text{ind}}
+\newcommand{\n}{\text{n}}
+\newcommand{\T}{\text{T}}
+\newcommand{\un}[1]{\underline{#1}}
+\newcommand{\po}[1]{\un{\vec #1}(\vec r)}
+
+\newcommand{\idx}[1]{#1\index{#1}}
+\newcommand{\content}[1]{\input{tex/#1}}
+
+\renewcommand{\labelitemi}{\(- \)}
+\newcommand{\colline}{\rule{\columnwidth}{.1pt}}
+\newcommand{\bx}[1]{\boxed{#1}}
+
+\newcommand{\const}{\operatorname{const}}
+
+\newcommand{\defas}{\mathrel{\mathop:}=}
+\newcommand{\invdefas}{\mathrel{=\mathop:}}
+\newcommand{\rn}{\mathbb{R}^n}
+\newcommand{\rnxn}{\mathbb{R}^{n\times n}}
+\newcommand{\rmxm}{\mathbb{R}^{m\times m}}
+\newcommand{\rmxn}{\mathbb{R}^{m\times n}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\norm}[1]{\left\|\,#1\,\right\|}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+	\hskip -\arraycolsep
+	\let\@ifnextchar\new@ifnextchar
+	\array{#1}}
+\makeatother
+
+%% DECLARATIONS: LENNART ELSEN
+% Operator Declarations
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\artanh}{artanh}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\isum}{\sum_{\emph{k}=0}^{\infty}}
+\DeclareMathOperator{\Isum}{\sum_{\emph{k}=1}^{\infty}}
+\DeclareMathOperator{\nsum}{\sum_{\emph{k}=0}^n}
+\DeclareMathOperator{\bico}{\begin{pmatrix} \alpha \\ k \end{pmatrix}}
+\DeclareMathOperator{\intab}{\int_{a}^b}
+\DeclareMathOperator{\intax}{\int_{a}^x}
+\DeclareMathOperator{\df}{\partial \emph{f}}
+\DeclareMathOperator{\du}{\partial \emph{u}}
+\DeclareMathOperator{\dx}{\partial \emph{x}}
+\DeclareMathOperator{\dy}{\partial \emph{y}}
+\DeclareMathOperator{\xo}{\emph{x}_{0}}
+\DeclareMathOperator{\yo}{\emph{y}_{0}}
+\DeclareMathOperator{\spec}{spec}
+\DeclareMathOperator{\dom}{dom}
+%\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\limxi}{\lim_{\emph{x} \rightarrow \xi}}
+\DeclareMathOperator{\rot}{rot}
+\DeclareMathOperator{\diverg}{div}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\drn}{\mathscr{D}(\mathbb{R}^\emph{n})}
+% Example Style
+\newcommand{\exbeg}[1]{\mbox{\quad \begin{color}{blue}$\square$ \textbf{BEISPIEL:} \quad #1 \end{color}}}
+\newcommand{\exend}{\mbox{\quad \begin{color}{blue}$\square$ \end{color}}}
+
+\newcommand{\example}[2]{BEISPIEL: {#1} \hrulefill
+ #2 
+ 
+ \hrule}
+
+
+\newcommand{\pgra}[1]{\paragraph{#1}}
+\newcommand{\subs}[1]{\subsection{#1}}
+\newcommand{\bitem}[1]{\begin{itemize}
+#1
+\end{itemize}}
+\newcommand{\lbtab}[4]{\begin{tabular}{p{#1\linewidth}p{#2\linewidth}p{#3\linewidth}} #4 \end{tabular}}
+
+\newcommand{\graphic}[2]{
+\begin{figure}[htp]
+\centering
+\includegraphics[scale = #1]{#2.pdf}
+\end{figure}
+}
+
+\newcommand{\mydef}[1]{
+$\blacksquare$ #1 $\blacksquare$ \\
+}
+
+\newcommand{\boxme}[1]{\fbox{\parbox{0.97\linewidth} { #1 }}
+}
+
+\newcommand{\enumerateabc}[1]{\begin{enumerate}[\hspace{0.5cm}(a)]{#1} \end{enumerate}}
+
+% USEFUL MACROS
+\newcommand{\dm}[1]{\begin{displaymath} #1 \end{displaymath}} % displaymath
+\newcommand{\eqn}[1]{\begin{equation} #1 \end{equation}} % equations
+\def\ba#1\ea{\begin{align*}#1\end{align*}} % align environment
+\newcommand{\eqnar}[1]{\begin{eqnarray} #1\end{eqnarray}}
+\newcommand{\underthebrace}[2]{\underset{#1}{\underbrace{#2}}} % stuff underneath braced expression
+\newcommand{\drawtikz}[1]{\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[auto, >=latex]
+#1
+\end{tikzpicture}
+\end{figure}}
+
+\newcommand{\glossentry}[3]{\begin{minipage}{0.25\linewidth}
+\emph{#1}
+\end{minipage}& \begin{minipage}{0.5\linewidth}
+#2
+\end{minipage} & \begin{minipage}{0.2\linewidth} #3 \end{minipage}\\ [12pt] } % for use inside a tabular enviornment ONLY
+
+% drawing stuff
+\newcommand{\dotnode}[3]{\node [circle, fill, minimum size=1pt, inner sep=1pt, name=#1] at (#2, #3) {};}
+\newcommand{\drawlens}[1]{\draw (#1,2.5) arc(163.398:196.602:8.75125) (#1, -2.5) arc(-16.602:16.602:8.75125);} % the height is invariable. The lens is merely positionable on the Z axis
+
+% text stuff
+\newcommand{\ifaof}{\textbf{iff }}
+
+% Matrices
+\newcommand{\bbm}{\begin{bmatrix}}
+\newcommand{\ebm}{\end{bmatrix}}
+\newcommand{\bpm}{\begin{pmatrix}}
+\newcommand{\epm}{\end{pmatrix}}
+\newcommand{\tp}[1]{\ensuremath{#1^{T}}} % transpose
+\newcommand{\herm}[1]{\ensuremath{#1^{H}}} % hermitian transpose
+
+
+% math stuff
+\newcommand{\norminf}[1]{||#1||_{\infty}}
+\newcommand{\normtwo}[1]{||#1||_{2}}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\w}{\omega}
+\newcommand{\absG}{\abs{G(j\w)}}
+\newcommand{\absH}{\abs{H(j\w)}}
+\newcommand{\absL}{\abs{L(j\w)}}
+\newcommand{\absT}{\abs{T(j\w)}}
+\newcommand{\absS}{\abs{S(j\w)}}
+\newcommand{\absM}{\abs{M(j\w)}}
+\newcommand{\absDel}{\abs{\Delta(j\w)}}
+\newcommand{\Gjw}{G(j\w)}
+\newcommand{\Hjw}{H(j\w)}
+\newcommand{\Fjw}{F(j\w)}
+\newcommand{\Tjw}{T(j\w)}
+\newcommand{\Sjw}{S(j\w)}
+\newcommand{\Ljw}{L(j\w)}
+\newcommand{\Mjw}{M(j\w)}
+\newcommand{\Deljw}{\Delta(j\w)}
+\newcommand{\Djw}{D(j\w)}
+\newcommand{\maxsig}{\bar{\sigma}}
+\newcommand{\minsig}{\underline{\sigma}}
+\newcommand{\eig}{\text{eig}}
+\newcommand{\inv}[1]{#1^{-1}}
+\newcommand{\Hinf}{\mathcal{H}_{\infty}}
+\newcommand{\Htwo}{\mathcal{H}_{2}}
+\newcommand{\diag}{\text{diag}}
+\newcommand{\rank}{\text{rank}}
+
+
+\renewcommand{\equiv}{\overset{\triangle}{=}}
+
+
+% LUKE
+\renewcommand\Re{\operatorname{Re}}
+\renewcommand\Im{\operatorname{Im}}
+
+
+

@@ -1,0 +1,289 @@
+\section{Secure Channels}
+
+\paragraph{Properties:} secure = authentic and confidential, synchronous vs. asynchronous, tunnel vs. transport
+
+\paragraph{Security at different OSI layers:}
+
+\textbf{Application layer:} (Implemented in end-hosts, Email sec.)
+\begin{itemize}
+\item[+] Extend appl. without involving OS, appl. can understand data and provide appropriate security
+\item[-] Security has to be designed separately for each appl.
+\end{itemize}
+
+\textbf{Transport layer} (Implemented in end-hosts, TLS, SSL, SSH)
+\begin{itemize}
+\item[+] Can be added to existing appl., more portable and easier to configure than network layer security
+\item[-] Protocol specific (TCP not UDP), appl. must be TLS aware
+\end{itemize}
+
+\textbf{Internet layer:} (Secure Traffic over multiple links, IPSec, OpenVPN)
+\begin{itemize}
+\item[+] Seamless security to Application and Transport Layer, integrated in IPv6 (available for IPv4)
+\item[-] Complex configuration on multi-user machines, Tunnel mode encrypts only part of route, depends on policy
+\end{itemize}
+
+\textbf{Link layer:} (Secure all traffic over specific link, WPA2 in HW)
+\begin{itemize}
+\item[+] Speed, seamless security to layers above
+\item[-] Every link secured separately, trust in link operator
+\end{itemize}
+
+\subsection{VPN}
+
+\paragraph{Goal:}  Securely interconnect networks or machines over an existing network (ex.: link branch offices via insecure WANs) 
+\begin{itemize}
+\item uses public network as transport layer
+\item uses cryptography to provide protection (symmetric with secret key, asymmetric with public and private key, encrypt payload only/and header) 
+\item provides confidentiality and authenticity
+\item IP in IP encaps. (remote LANs appear adjacent)
+\end{itemize}
+
+\paragraph{Operation modes:} ESP = Encapsulating Security Payload, AH = Authentication header \\
+\emph{Tunnel mode:} encapsulate entire encrypted IP packet
+no routers along the way need to examine
+the inner IP header. \\ 
+\emph{Transport:} encrypt payload only
+
+\begin{tabular}{p{0.2\linewidth}p{0.7\linewidth}}
+\textbf{AH+ESP} & The payload is encrypted by ESP and the payload and parts of the outer IP header are authenticated by AH \\
+\hline
+\textbf{ESP+Auth} & Encryption and ESP's data origin authentication are applied to the payload only \\
+\end{tabular}
+
+AH+ESP has two benefits over ESP+Auth since it allows for IP header auth. and it allows for auth. and encryption to be handled by two different entities (e.g., auth. on end-host, encryption on firewall)
+
+\paragraph{IPSec Security Association (SA):} used to lookup security algorithms/parameters to apply
+to a received IPSec datagram; separate for ESP and AH, unidirectional; need two SAs for a bidirectional channel, SA setup: manual or with IKE (Internet Key Exchange)
+
+SA is uniquely defined by a triple of \emph{Security Parameter Index (SPI):} 32 bit num. placed in AH or ESP datagrams, \emph{IP dest. addr.:} address of device for whom SA is established and \emph{Security Protocol Identifier:} AH or EH. Specifies whether SA for AH or ESP
+
+\textbf{Attacks on VPN}
+
+\begin{tabular}{p{0.15\linewidth}p{0.4\linewidth}p{0.3\linewidth}}
+Type & Attack & Remedy \\
+\hline
+\hline
+Passive & Eavesdropping & Sender encrypts every packet \\
+\hline
+Active & MitM, add, modify, delete data packets & Sender signs every packet with a secure hash\\
+\hline
+Replay (active) & Reproduce and inject packets (captured earlier); example: replay ``pay 1\$'' 100 times to harm victim & Embed UID or timestamp in every packet before signing
+\end{tabular}
+
+Both SSL and TLS support above protection. When using SSL, authentication has to be explicitly turned on before the initial key exchange (client-server-auth.).
+
+\paragraph{Message Authentication} 
+\begin{itemize}
+\item used to check source authenticity, message not modified (error code), message timing (timestamp), sequence (number)
+\item only $A$ and $B$ share a key $K$ (conventional encryption) 
+\item at $A$ append MAC to message $M$: $MAC = f(K_{AB}, M)$. Full packet: $M + MAC$
+\item compare MACs at $B$
+\end{itemize}
+
+\paragraph{HMAC} MAC using hash functions (MD5, SHA, ....) \\ \emph{Advantages:} fast, source code free and available, no patents or export restrictions
+\dm{
+HMAC(K, M) = f_h(K' \text{ XOR } opad + f_{h}(K' \text{ XOR } ipad + M))
+}
+
+\paragraph{VPN Security:} Encryption must be combined with authentication (HMAC), randomized Initialization Vectors (IVs), replay protection
+
+\paragraph{TLS:} Transport Layer Security. Provides communications privacy, prevents eavesdropping, tampering, or message forgery by: authentication (using public key certificates), encryption, data integrity
+
+\textbf{Handshake Protocol:} executed before the appl. protocol transmits or receives any data, negotiation of encryption MAC and compression algo. and cryptographic keys. After TLS handshake procedure finished transmitted appl. data is encrypted and server and optionally client are authenticated. (Client encrypts secret with public key, server decrypts with private key $\to$ master secret)
+
+\textbf{Server authentication:} done via X.509 Server Public Key Certificates. Trusted Certificate Authority (CA) signs cert. with private key, client browsers get the CA's public key.\\
+Upon TLS secured site visit: browser checks\\ {\tt hash(certificate) == decrypt(public key, signature)}.\\
+Server needs (a) the CA-signed TLS certificate (b) its corresponding private key.
+
+\pgra{Key size(s):} SSL and TLS support keys 40-bit RSA keys, 56-bit DES keys (both deemed too short and thus insecure) and 128-bit (or higher) keys (secure).
+
+\pgra{Purpose of a certificate:} Secure container for a public key,
+Issued by a trusted third party,
+Issued to a subject (owner),
+Valid for a limited time,
+Usable for a limited purpose,
+Information Fields
+
+\pgra{Content of a X.509 certificate:} Unique Identifier, Issuing CA, Validity, Owner, Public key, Purpose, Name alternatives, Extended purpose, KeyID of Issuing CA, Revocation Info, Online verification, CA signature
+
+\textit{The CA flag in the certificate shows whether it is a signing certificate or an end-user certificate.}
+
+\pgra{Structure of a PKI:} From (1): highest trust to (4): end-user certificates
+\begin{enumerate}
+\item Root CA: Self signed, Offline, highest trust
+\item Subsidiary CA: Offline/Online, Issues CAs
+\item Issuing CA: Online, Issues end-user certificates
+\item Certificates: certificates bought for business (e.g. securing e-commerce, etc.)
+\end{enumerate}
+
+\pgra{Technical issues with X.509 certificates:} 
+\bitem{
+\item Compromise of private keys
+\item Inadequate algorithms/key sizes
+\item Incomplete verification (rfc 5280): Certificate Validation (Integrity, Validity, etc.),
+Path validation (20 Pages in rfc 5280),
+Revocation status verification
+}
+
+\pgra{Root CA:} a CA with a self-signed certificate (there's 'no one above it'). To trust a certificate signed by this CA, it must necessarily be in the ``trusted CA list'' of every browser
+
+\subsection{SSH}
+
+\paragraph{Definition:} standard for remote logins and encrypted file transfer, provides secure command shell, secure file transfer, data tunneling, fully negotiable. 
+\\Three protocols: SSH-TRANS, SSH-AUTH, SSH-CONN
+
+\paragraph{SSH-TRANS:} fundamental SSH building block, runs over TCP. Provides: algorithm negotiation, key exchange (Diffie-Hellman) (repeated every h/Gb), Session ID, server authentication, encryption, integrity, data compression
+
+\paragraph{SSH-AUTH:} used over SSH-TRANS to authenticate client \\
+Provides: framework for authentication mechanisms\\
+Authentication request is client driven, contains: username U, method name M and method specific data D, Service name S (facility to which client requests access)
+\textbf{Authentication Methods}
+\begin{itemize}
+\item Public-key user authentication
+\item Password authentication (SSH-CONN encrypts) 
+\item Host based authentication\\
+\quad User authentication: responsibility with client host\\
+\quad Host authentication: trust relationships between hosts, server verifies host identity
+\end{itemize}
+
+\paragraph{SSH-CONN:} used after SSH-AUTH to provide richer services over SSH-TRANS conn. Provides: multiplexing multiple streams (channels), port forwarding, compression handling\\
+\emph{Port forwarding:} Encrypt/decrypt traffic for other TCP/IP applications, securing otherwise insecure protocols. Local/\\remote forwarding: forward local port to remote server port, forward remote server port to local host port (i.e. if port 80 is blocked by firewall)
+
+\paragraph{Attacks SSH can counter}
+\begin{itemize}
+\item Eavesdropping $\to$ encryption in SSH-TRANS
+\item Name service and IP spoofing $\to$ crypt. verified server ID (SSH-TRANS) 
+\item Connection-hijacking $\to$ not preventable on TCP-level, integrity checking (MACs checked by SSH-TRANS)
+\item Man-in-the-middle $\to$ server authentication: public key + host based
+\end{itemize}
+
+\paragraph{Attacks SSH can NOT counter}
+\begin{itemize}
+\item Password cracking $\to$ rather social problem
+\item IP and TCP attacks, SSH operates on TCP (DoS: SYN flood, TCP RST, ICMP bogus, TCP desynch.)
+\item traffic analysis (possible to watch data amount, src/dest, timing)
+\end{itemize}
+
+\section{WebApp Security}
+\paragraph{Top 5 Application Security Flaws:} 1. Injection flaws, such as SQL, OS, and LDAP injection, 2. Cross Site Scripting (XSS)
+3. Broken Authentication and Session Management
+4. Insecure Direct Object Reference
+5. Cross Site Request Forgery (CSRF)
+
+\paragraph{Threat Vectors - Web Application:} Abuse client (XSS, Phishing), abuse link (session hijacking), abuse application (XSS), abuse database (SQL injection). \\
+Direct access to application by definition (HTTP: 80, HTTPS: 443). Even through secure encrypted tunnel.
+
+\subsection{Session Management}
+
+\paragraph{HTML - Stateless Protocol} The server does not know which clients connects again. Any meaningful application needs state info. We have to implement session state ourselves.
+
+\paragraph{Adding State to HTTP} Server creates a SessionID upon first contact. Client stores SessionID locally. Client submits SessionID with every request to server. Server identifies client based on SessionID and stored session state.
+
+\paragraph{Session State and Security}
+SessionID is a primary target for an attacker. Crucial processes: Generation, Transport, Destruction and Revocation of SessionID. Session management is crucial to the secure operation of an application.
+
+
+\paragraph{Session - Generation}
+Strength: The SessionID must not be predictive. Randomness: strong method of generating ID‘s, don‘t use linear algorithms based on time, date, processid, or client IP
+
+\paragraph{Session - Revocation}
+Session timeout, client (logout) and server (no activity, misuse) able to revoke, expiry time set to minimum
+
+\paragraph{Session - Transport} 
+Three ways to transport the session ID: HTTP GET, HTTP POST, Cookies
+
+\paragraph{Cookies:} A piece of information stored in the browser. Cookies are restricted to domain, path and are given an expiration date. The server sets a cookie, the browser submits cookies back. Cookies can be restricted to HTTPS connections only. Cookie information submitted in request/response header. (Set-Cookie: 6B=DB98, Cookie: 6B=DB98)
+
+\paragraph{Attacks on session ID}
+\begin{itemize}
+\item Observation: Sniffing Attack: HTTP unencrypted $\to$ use HTTPS \emph{throughout} the session!
+\item Brute Force Attack:\\ \quad Passwords: the SessionID has to be random \\ \quad Username: must not be predictable (brute force, DoS)
+\end{itemize}
+
+\begin{tabular}{p{0.15\linewidth}p{0.3\linewidth}p{0.4\linewidth}}
+Type & Advantage & Disadvantage \\
+\hline
+\hline
+HTTP GET & Easy to implement, compatibility (no cookies needed)  &  Reviewable in browser history, URL information is logged on several devices (firewalls, server, proxy), trivial exercise to manipulate SessionID, when the client clicks a link to new website HTTP REFERER reveals session information \\
+\hline
+HTTP POST & Not as obvious as URL embedded SessionIDs, allows client to safely store/transmit URL info, compatibility & Hidden fields not really hidden, easy to manipulate, more complex webpage creation processes necessary, prone to coding error \\
+\hline
+Cookies & More options available to control SessionID‘s, session information unlikely to be recorded on intermediate devices, built in ability to restrict cookie-submission to HTTPS connections only & Persistent cookies exist as files on the clients file-system, may be stolen, any request to the domain will provide the cookie, if the cookie-path matches, users may disable cookies \\
+\end{tabular}
+
+\subsection{SQL Injection}
+
+\paragraph{Code injection:} refers to attacks which insert code that is afterwards interpreted by a process. \emph{Examples:} Command/Shell Injection (target: OS), XSS (Browser), SQL Injection (Database). Occurs when:
+\begin{itemize}
+\item Data enters the application from an untrusted source
+\item The data is part of a string that is executed as a command by the application
+\item The executed commands elevates privileges or capabilities the attacker normally wouldn't have
+\end{itemize}
+
+\paragraph{SQL - Structured Query Language} SQL is a special-purpose programming language designed for managing data in relational database management systems (RDBMS). Includes \emph{view, insert, query, update} and \emph{delete} operations.
+
+\begin{tabular}{p{0.35\linewidth}p{0.6\linewidth}}
+Command & Description \\
+\hline
+\hline
+SELECT FROM & Extract data from a specific table. One entry can be retrieved with WHERE statement \\
+INSERT INTO & Insert data into a specific table \\
+DELETE FROM & Delete data from a specific table\\
+UPDATE & Update data in the table to a new value \\
+CREATE & Create a new table\\
+DROP & Delete the entire table (!) \\
+ALTER & Change a table \\
+UNION & Retrieve data from more than one table (number of columns must match) \\
+\end{tabular}
+
+\paragraph{SQL Code Injection:} insertion of a SQL query via the input data from the client to the application. A successful SQL injection can
+\begin{itemize}
+\item read sensitive data from the database
+\item modify database data (insert / update / delete)
+\item execute administration operations on the database
+(such as shutdown the DBMS)
+\item recover the content of a given file present on the DBMS file
+system
+\item issue commands to the operating system
+\end{itemize}
+\emph{SQL injection attacks result from flaws in the WebApp, not from flaws in the database or webserver!}
+
+\paragraph{Example:} Select user id and login upon login of user \emph{xyz}: \\
+\\
+{\tt SELECT userid, login FROM users WHERE login='xyz'}\\ {\tt AND pwd='swordfish'} \\
+\\
+Can be exploited using {\tt ' OR ''='} as login and/or {\tt ' OR ''=''} as password:\\
+\\
+{\tt SELECT userid, login FROM users WHERE login=} \\ {\tt '' OR ''='' AND pwd='' OR ''=''} \\
+\\
+Above statement will always return TRUE and return all records in table {\tt users}. The attacker is authenticated as the first user in the table.
+
+\textbf{Other attacks:} {\tt UNION} to read (unauthorized) from other tables, {\tt DROP} table to delete user/customer data, advanced/\\blindfolded SQL injection, combination of {\tt ;} (statement termination) and {\tt --} (comment) to run any SQL command.
+
+\paragraph{SQL injection defense} The following will not circumvent SQL injection attacks:
+\begin{itemize}
+\item VPN, SSL and Firewalls (the attack occurs when using a \emph{legitimate} channel)
+\item client-side input validation (can be easily circumvented by an attacker)
+\end{itemize}
+Instead, do the following:
+\begin{itemize}
+\item[+] \textbf{constrain and sanitize all client data}
+\\ \quad PHP: {\tt mysql\_real\_escape\_string} function
+\item[+] avoid disclosing detailed error information
+\item[+] do not use client data directly in SQL queries (use prepared statements, parametrized queries)
+\item[+] run the database process with reduced privileges
+\item[+] Check all entry points: (a) fields in web forms, (b) script parameters in URL query strings, (c) values stored in cookies or hidden fields
+\end{itemize}
+
+\pgra{Prepared statements:} A prepared statement or a parametrized statement is used to execute the same statement repeatedly with high efficiency. The basic workflow consists of the following steps:
+
+\begin{enumerate}
+\item Prepare stage: a statement template is sent to the database server. The server performs a syntax check and initializes server internal resources for later use.
+\item Bind and execute: the client binds parameter values and sends them to the server. The server creates a statement from the statement template and the bound values to execute it using the previously created internal resources.
+\item Repeated execution: the statement is not parsed again and the statement template is not transferred to the server again.
+\end{enumerate}
+
+\textit{Injection defense:} Bound variables will be escaped automatically by the server. The server inserts the escaped values at the appropriate places into the statement template before execution. A hint must be provided to the server for the type of bound variable, to create an appropriate conversion.
+
+\paragraph{Other attack strategies} Fuzzing (insert {\tt ' " ) # || + >} into every entry field), delay query, order by $n$, get metadata: {\tt sysobjects, syscolumns} \\
+IDS evasion: try all the flavors of {\tt OR 1=1}, insert whitespaces, comments in between statements, wildcards, concatenation, etc.

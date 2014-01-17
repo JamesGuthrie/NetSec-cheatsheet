@@ -1,0 +1,316 @@
+\pgra{Diffie-Hellman key exchange:} establishes a shared secret that can be used for secret communications by exchanging data over an insecure channel. The simplest,  implementation of the protocol uses the multiplicative group of integers modulo $p$, where $p$ is prime and $g$ is primitive root mod $p$.
+
+\begin{tabular}{ccc|c}
+\multicolumn{1}{c}{\textbf{Alice:} secret $a$} & &  \multicolumn{1}{c}{\textbf{Bob:} secret $b$} & \\
+Calculates & Sends & Calculates & Public \\
+\hline
+\hline
+ & $p$, $g\to$ & & $p$, $g$ \\
+$g^a$ mod $p$ = A & $A\to$ & & $p$, $g$, $A$ \\
+ & $\leftarrow B$ &$g^b$ mod $p$ = B & $p$, $g$, $A$, $B$ \\
+ $B^a$ mod $p = \mathbf{s}$ & & $A^b$ mod $p = \mathbf{s}$ & $p$, $g$, $A$, $B$ \\
+\end{tabular}
+
+where $\mathbf{s}$ is the established secret $\Rightarrow$ color-mixing example.
+
+\subs{Quiz answers} 
+ 
+\textbf{  1}  Determine the correct order where "$>$" means "better than":  
+\textit{ incomplete security $>$ no security $>$ feel-good security}
+
+\textbf{  2}  The CIA security triad stands for:  
+\textit{ confidentiality, integrity, availability}
+
+\textbf{  3}  According to Steve Kent's attack classification, which statement is wrong?  
+\textit{ Compromise of content is an active attack on integrity and authenticity}
+
+\textbf{  4}  Thanks to industry espionage by NSA on an airplane deal, what exactly happened in the past?  
+\textit{ Airbus Industries lost a deal to Boeing as NSA uncovered bribery by Airbus in Saudi Arabia}
+
+\textbf{  5}  The Maxus Credit Card Pipeline is:  
+\textit{ a case of a hacker stealing hundreds of thousands of credit card records from an online shop}
+
+\textbf{  6}  What is the pre-disclosure risk in the vulnerability lifecycle?  
+\textit{ The time between the discovery and the disclosure of the vulnerability}
+
+\textbf{  7}  What is the post-disclosure risk in the vulnerability lifecycle?  
+\textit{ The time between the disclosure and the patch availability of the vulnerability}
+
+\textbf{  8}  During the pre-disclosure risk period in the vulnerability lifecycle, who is in general aware of the threat of this vulnerability? 
+\textit{ Only a closed group. This group could be anyone from hackers, organized crime or responsible security researchers/vendors}
+
+\textbf{  9}  In the vulnerability lifecycle, which of the following risk periods can be influenced by the ordinary end user of the vulnerable software product? 
+\textit{ post-patch risk}
+
+\textbf{  10}  Who is the best source of information for the disclosure of new vulnerabilities?  
+\textit{ Trusted and independent security information providers}
+
+\textbf{  11}  What is an egress filter?  
+\textit{ a filter for outgoing traffic}
+
+\textbf{  12}  At what networking layer does an Internet Protocol v6 packet filter work?  
+\textit{ Network layer}
+
+\textbf{  13}   What does a NAT device change in a packet sent from a host in the internal network to a destination in the Internet? 
+\textit{ rewrite source address and source port}
+
+\textbf{  14}  The use of truly random sequence numbers in a communication protocol:  
+\textit{ are an effective means to defend against message injection attacks, but only if the space of sequence numbers is sufficiently big}
+
+\textbf{  15}  You query one of the root name servers for the IP address of www.google.info:  
+\textit{ Whether google.info is registered or not, you get the same response from the root nameserver}
+
+\textbf{  16}  Suppose that an attacker has successfully executed a cache poisoning attack against a nameserver of X, a big Swiss ISP. Should the bank UBS (www.ubs.com) worry about the security of their online banking? 
+\textit{ UBS should worry because people using ISP X might get the wrong IP address when they try to connect to www.ubs.com}
+
+\textbf{  17}  Where does the authoritative nameserver of the zone ethz.ch get the information from in order to serve DNS requests for the zone ethz.ch? 
+\textit{ The information comes from the configuration of the autoritative nameserver of ethz.ch}
+
+\textbf{  18}  Which of the following techniques is not used in fast flux service networks?  
+\textit{ The possibility to manipulate DNS information through cache poisoning}
+
+\textbf{  19}  A client sends a DNS request. An attacker now sends multiple replies to this client. Which reply will be processed by the client? 
+\textit{ The first reply with the same DNS sequence ID}
+
+\textbf{  20}  Which of the following actions does not help to effectively defend against DNS cache poisoning attacks? 
+\textit{ Deployment of primary and secondary nameservers for each zone}
+
+\textbf{  21}  A user connects to a web application. Which party creates the cookie based session id?  
+\textit{ The server creates the session id and submits it to the users' browser in the first response}
+
+\textbf{  22}  Which of the following correctly characterizes the use of cookies?  
+\textit{ The server sets a cookie, the browser submits the cookie back}
+
+\textbf{  23}  What of the following is the best method to generate a session id?  
+\textit{ random number}
+
+\textbf{  24}  What of the following is an effective means to defend against code injection attacks?  
+\textit{ thorough input validation on the server}
+
+\textbf{  25}  The SIS model for homogeneous networks describes:  
+\textit{ how viruses spread in biology}
+
+\textbf{  26}  The Abilene network is:  
+\textit{ the same as the Internet2 operating at 10Gb/s}
+
+\textbf{  27}  A member of a large monoculture compared to a member of a small population is to a targeted Internet worm:  
+\textit{ equally susceptible}
+
+\textbf{  28}  A worm in the Internet compared to a virus in a homogeneous network typically will:  
+\textit{ never disappear}
+
+\textbf{  29}  The impact of a real Internet worm was known:  
+\textit{ since 1988}
+
+\textbf{  30}  How many UDP packets are required for an Internet worm at least:  
+\textit{ 1}
+
+\textbf{  31}  How many TCP packets are required for an Internet worm at least:  
+\textit{ 3}
+
+\textbf{  32}  For a given product vendors can release patches once a month (on a fixed schedule), or continually. For patches being released once a month, the risk of exploitation is: 
+\textit{ increased}
+
+\textbf{  33}  The Sobig.F email worm created an increase of how much additional email traffic (bytes/hour) at peak time: 
+\textit{ 4 times}
+
+\textbf{  34}  The Blaster worm was using this scanning strategy:  
+\textit{ random with local subnet preference}
+
+\textbf{  35}  99.999\% availability means how much downtime per year?  
+\textit{ 5 minutes}
+
+\textbf{  36}  A SYN flood attack can be countered with:  
+\textit{ SYN cookies}
+
+\textbf{  37}  Compression bombs are:  
+\textit{ A small archive file that decompresses to a very large file}
+
+\textbf{  38}  For achieving an amplification effect in a DDoS attack, which one does not work?  
+\textit{ size(response) $>$ size(request)}
+
+\textbf{  39}  TLS works in which OSI layer?  
+\textit{ Transport Layer}
+
+\textbf{  40}  Which VPN mode encrypts also the header of the original IP packet?  
+\textit{ IPSec tunnel mode}
+
+\textbf{  41}  A Message Authentication Code (MAC) function's security cannot depend on  
+\textit{ base64 encoding}
+
+\textbf{  42}  Which protocols does SSH allow for negotiation? Choose the most complete answer.  
+\textit{ encryption, integrity, key exchange, compression, and public key algorithms and formats}
+
+\textbf{  43}  The SSH-Authentication protocol  
+\textit{ authenticates the user to the server}
+
+\textbf{  44}  Which attack can SSH not counter  
+\textit{ SYN flooding}
+
+\textbf{  45}  Biometrics used for authentication are mainly judged by the  
+\textit{ Crossover error rate}
+
+\textbf{  46}  For IEEE 802.1x it is true that  
+\textit{ The uncontrolled port is always open}
+
+\textbf{  47}  XSS attacks require  
+\textit{ insufficient HTML output encoding done by the target web site application}
+
+\textbf{  48}  XSS Javascript attack code cannot be embedded in  
+\textit{ favicon image file}
+
+\textbf{  49}  Cross-Site Request Forgery is a  
+\textit{ blind write-only attack}
+
+\textbf{  50}  Can you imagine a legitimate use of a security exploit?  
+\textit{ Yes, for example to test effectivity of security measures (IPS, antivirus, etc)}
+
+\textbf{  51}  Which statement is true?  
+\textit{ In a packet-based IDS, traffic content is examined.}
+
+\textbf{  52}  What is always true of an intrusion prevention system (IPS)?  
+\textit{ An IPS is an inline device, traffic passes through it.}
+
+\textbf{  53}  What is a security policy of an IPS device?  
+\textit{ The security policy defines device settings (thresholds, ..), which signatures are activated, and the type of action per signature.}
+
+\textbf{  54}  When comparing host-based (H-IDS) vs. network-based (N-IDS) intrusion detection systems, it is generally true that: 
+\textit{ N-IDS is easier to deploy than H-IDS.}
+
+\textbf{  55}  What technique is necessary to effectively protect against single packet attacks?  
+\textit{ An inline device}
+
+\textbf{  56}  A buffer overflow is  
+\textit{ a condition that occurs when data is written past the end of a fixed-length buffer}
+
+\textbf{  57}  A buffer overflow can occur  
+\textit{ on the stack, on the heap, and in the global variable section}
+
+\textbf{  58}  Which C library functions help to prevent a buffer overflow?  
+\textit{ strlcpy, strlcat}
+
+\textbf{  59}  Some unicode operations can cause a buffer overflow. Which statement is wrong?  
+\textit{ the "to lower case" operation on UTF-16 expands the string size up to 3x}
+
+\textbf{  60}  The best practice for failure handling in secure programs is:  
+\textit{ fail open or fail close depending on the task of the program}
+
+\textbf{  61}  Applying privilege separation to a monolithic program means  
+\textit{ splitting a program into processes with different privileges}
+
+\textbf{  62}  Taint checking prevents that  
+\textit{ user input data is directly given to dangerous system calls without prior sanitisation}
+
+\textbf{  63}  Anti-Spam solutions that can make spam decisions while receiving SMTP envelope information are preferable to those that also require the actual email content for any spam decision. Why? 
+\textit{ system resources can be saved by making spam decisions based on SMTP envelope}
+
+\textbf{  64}  Which statements about email authentication is wrong?  
+\textit{ worldwide email authentication will prevent all spam}
+
+\textbf{  65}  Which statement is true?  
+\textit{ SPF is integrated in large parts into SenderID}
+
+\textbf{  66}  Which statement about the US Federal Can Spam Act is wrong?  
+\textit{ it requires opt-in for newsletter recipients}
+
+\textbf{  67}  Switzerland’s new anti-spam law that is effective since Jan 1st 2007 is  
+\textit{ a revised version of both FMG and UWG}
+
+\textbf{  68}  Which statement about DKIM public keys is wrong?  
+\textit{ The keys are embedded in a CA signed X.509 certificate}
+
+\textbf{  69}  What is a drive-by download?  
+\textit{ Installation of software when visiting a web site without explicit approval by the user}
+
+\textbf{  70}  Which third party content does not involve a security risk?  
+\textit{ users casting votes in a multiple choice poll}
+
+\textbf{  71}  In 2011 how many vulnerabilities affected a typical windows end-point with the 50 most prevalent programs installed (including vulnerabilities in the windows operating system)? 
+\textit{ $>$501 vulnerabilities}
+
+\textbf{  72}  In 2011 what percentage of the vulnerabilities of a typical Windows end-point (with the Top-50 most prevalent programs installed) affected third-party (= non-Microsoft) programs? 
+\textit{ 61\% - 80\%}
+
+\textbf{  73}  To patch a typical windows end-point with the 50 most prevalent programs installed requires the user to master how many different update mechanisms (including MS update)? 
+\textit{ between 11-20}
+
+\textbf{  74}  In 2011, how many vulnerabilities affecting a typical Microsoft Windows end-point with the 50 most prevalent programs installed had a patch available at the day of dislosure? 
+\textit{ 61\% - 80\%}
+
+\textbf{  75}  How does the availability of exploits relate to the market share of the vulnerable programs? 
+\textit{ Programs with higher market share generally have more exploits}
+
+\textbf{  76}  What percentage of Microsoft Windows end-point programs with a market share of $>$90\% had exploits in the last two years? 
+\textit{ $>$80\%}
+
+\textbf{  77}  Looking at the portfolio of the Top-200 most prevalent Microsoft Windows programs. What percentage of the programs found vulnerable in one year are not vulnerable in the next year or vice versa?  
+\textit{ 26-50\%}
+
+\textbf{  78}  SQL Injection is a problem of  
+\textit{ the web application}
+
+\textbf{  79}  Which of the web application technologies ASP, ASPX, Java, PHP, CGI, or Perl are vulnerable to SQL injection attacks? 
+\textit{ all, it is a web app implementation problem}
+
+\textbf{  80}  Which of the following measures can effectively prevent SQL injection?  
+\textit{ Using stored procedures for all database queries}
+
+\textbf{  81}  Following the successful infection of a target, malware typically executes one or several of the following actions: (1) send spam, (2) infect other systems, (3) steal local private data, (4) connect to CnC. Which is the sequence of actions that a profit motivated cybercriminal would follow?  
+\textit{ 4-3-2-1}
+
+\textbf{  82}  Cybercriminals want to stay anonymous and yet control and communicate with infected systems. What technology is typically used by modern malware to achieve this goal? 
+\textit{ Connect master through a layer of intermediate proxies}
+
+\textbf{  83}  Cybercriminals use sophisticated techniques to evade detection and stay resilient against takedown efforts. One technology used is IP flux. What is IP Single Flux? (CnC = command and control, FQDN fully qualified domain name) 
+\textit{ The FQDN of the CnC’s host has multiple IP addresses assigned (DNS A record) with a short TTL.}
+
+\textbf{  84}  Cybercriminals use domain flux to build a robust and resilient CnC infrastructure. A specific malware generates $N$ new and unique domain names per day to establish connection to the bot master. Which of the following is true? 
+\textit{ The bot master has to activate and control at least 1 of these domains to control the botnet.}
+
+\textbf{  85}  Comparing static vs. behaviour based detection techniques. Static signature based detection ... 
+\textit{ ... is reliable with low rate of false positives}
+
+\textbf{  86}  Comparing static vs. behaviour based detection techniques. Behavioral based detection ... 
+\textit{ ... suffers from a higher rate of false positives}
+
+\textbf{  87}  ADS-B an application layer protocol for sensor networks optimized for use  
+\textit{ in the air}
+
+\textbf{  88}  AIS is an application layer protocol for sensor networks optimized for use  
+\textit{ at sea}
+
+\textbf{  89}  What is Gnuradio?  
+\textit{ a software defined radio framework}
+
+\textbf{  90}  What does an attacker do in an “overshadowing” attack on ADS-B?  
+\textit{ modify messages}
+
+\textbf{  91}  What is the SuisseID?  
+\textit{ The certificate based digital identity solution of Switzerland for signature and}
+
+\textbf{  92}  The term “spam” for unsolicited communication (like email) was coined  
+\textit{ in a Monty Python Sketch}
+
+\textbf{  93}  Which of the following is wrong?  
+\textit{ DKIM uses the DNS system to store private keys}
+
+\textbf{  94}  Snowflake spam is  
+\textit{ Spam that contains images with stains}
+
+\textbf{  95}  A spammer gets listed on to the ROSKO list after  
+\textit{ having been spam terminated by at least three ISPs}
+
+\textbf{  96}  Which statement is true?  
+\textit{ The same email that is spam to one person might not be considered spam by another}
+
+\textbf{  97}  What is Google's ``2-step verification''?
+\textit{ A strong authentication scheme}
+
+\textbf{  98}  What does it mean for a Youtube video to be “unlisted”?  
+\textit{ The video is shared by the link}
+
+\textbf{  99}  Which Web Browser does not use Google Safe Browsing?  
+\textit{ Microsoft Internet Explorer}
+
+\textbf{  100}  Which property does a Circle in Google+ not have? 
+\textit{ The circle size remains constant after creation}
