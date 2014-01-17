@@ -60,7 +60,7 @@ Modes: 1.Basic NAT (1 to 1), 2. Network Address and Port Translation (many to 1)
 
 \pgra{NAT example} IPtables has a NAT table in OUTPUT and POSTROUTING chains, which supports MASQUERADE jump (replace sender address with router address).
 
-\pgra{NAT UDP hole punching:} assumes that client A and B already have active connection with a rendezvous server S, A asks S for help to establish connection with B, S replies with B‘s endpoints, S sends B connection request with A‘s endpoints. A and B start sending UDP packets: 1st packet from A punches hole in A‘s NAT and is blocked by B, 1st packet from B punches hole in B‘s NAT and passes A‘s NAT, 2nd packet from A passes B‘s NAT.
+\pgra{NAT UDP hole punching:} assumes that client A and B already have active connection with a rendezvous server S, A asks S for help to establish connection with B, S replies with B's endpoints, S sends B connection request with A's endpoints. A and B start sending UDP packets: 1st packet from A punches hole in A's NAT and is blocked by B, 1st packet from B punches hole in B's NAT and passes A's NAT, 2nd packet from A passes B's NAT.
 
 \pgra{STUN - Session Traversal Utilities for NAT:} Solves problem of discovering external address, client needs address of STUN server, client sends binding request to STUN server by UDP, receives his external address in the response (if NAT does deep packet inspection and rewrites anything that looks like my IP $\to$ XOR-ing with fixed mask), will not work with symmetric NATs that remember the remote end of UDP packet.
 
@@ -164,7 +164,7 @@ Authoritative Name Servers. Global DNS servers. (corrupting data) and network sp
 \item No need to wait for the attacker: look up \\{\tt [1 ... 100].bank.com} 
 }
 
-Reduces the chances to $656:1$. The TTL only stops repeated races for the same name. Don‘t give an answer, provide attacker server name in authority section. Cache server thinks that this server is responsible for all  {\tt www.bank.com} requests. Attacker may own mail through DNS (MX). \\
+Reduces the chances to $656:1$. The TTL only stops repeated races for the same name. Don't give an answer, provide attacker server name in authority section. Cache server thinks that this server is responsible for all  {\tt www.bank.com} requests. Attacker may own mail through DNS (MX). \\
 \textit{The fix } $\to$ Per query source port randomization (might be still insecure with 100Gbit links coming up).
 
 \textbf{The combination of multiple secure systems does not necessarily imply a resulting system. NAT rewrites ports.}

@@ -184,7 +184,7 @@ SessionID is a primary target for an attacker. Crucial processes: Generation, Tr
 
 
 \paragraph{Session - Generation}
-Strength: The SessionID must not be predictive. Randomness: strong method of generating ID‘s, don‘t use linear algorithms based on time, date, processid, or client IP
+Strength: The SessionID must not be predictive. Randomness: strong method of generating ID's, don't use linear algorithms based on time, date, processid, or client IP
 
 \paragraph{Session - Revocation}
 Session timeout, client (logout) and server (no activity, misuse) able to revoke, expiry time set to minimum
@@ -208,7 +208,7 @@ HTTP GET & Easy to implement, compatibility (no cookies needed)  &  Reviewable i
 \hline
 HTTP POST & Not as obvious as URL embedded SessionIDs, allows client to safely store/transmit URL info, compatibility & Hidden fields not really hidden, easy to manipulate, more complex webpage creation processes necessary, prone to coding error \\
 \hline
-Cookies & More options available to control SessionID‘s, session information unlikely to be recorded on intermediate devices, built in ability to restrict cookie-submission to HTTPS connections only & Persistent cookies exist as files on the clients file-system, may be stolen, any request to the domain will provide the cookie, if the cookie-path matches, users may disable cookies \\
+Cookies & More options available to control SessionID's, session information unlikely to be recorded on intermediate devices, built in ability to restrict cookie-submission to HTTPS connections only & Persistent cookies exist as files on the clients file-system, may be stolen, any request to the domain will provide the cookie, if the cookie-path matches, users may disable cookies \\
 \end{tabular}
 
 \subsection{SQL Injection}
