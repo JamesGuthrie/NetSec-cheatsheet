@@ -1,0 +1,11 @@
+.DS_Store
+*.toc
+*.log
+*.idx
+*.aux
+*.bbl
+*.pdf
+*.blg
+*.synctex.gz
+ns_encoded.txt
+tmp
