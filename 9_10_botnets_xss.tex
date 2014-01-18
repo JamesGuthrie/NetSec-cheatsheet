@@ -106,7 +106,7 @@ Type & Advantage & Disadvantage \\
 \pgra{Browser/JavaScript Same-Origin Policy} Same-origin policy defines access rights: A script can
 only access content and properties of a document loaded from the same origin as the document containing the script. Same origin means: same protocol, same hostname, same port.\\ Examples: script in a document loaded from {\tt site.tld} can access documents {\tt site.tld/here} \& {\tt site.tld/a/there} but not {\tt site.tld:8080/there} or {\tt bank.tld/yonder}.\\
 \textbf{Never include scripts you don't trust:} \\
-{\tt <script src=“http://you.tld/cnt.js“></script>}
+{\tt <script src="http://you.tld/cnt.js"></script>}
 
 the script loaded from {\tt you.tld} is evaluated in the context of origin {\tt me.tld}! 
 
