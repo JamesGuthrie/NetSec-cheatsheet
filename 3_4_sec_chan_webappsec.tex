@@ -65,7 +65,7 @@ Type & Attack & Remedy \\
 \hline
 Passive & Eavesdropping & Sender encrypts every packet \\
 \hline
-Active & MitM, add, modify, delete data packets & Sender signs every packet with a secure hash\\
+Active & MitM, add, modify, delete data packets & Sender signs every packet with a secure hash (provides integrity and authenticity)\\
 \hline
 Replay (active) & Reproduce and inject packets (captured earlier); example: replay ``pay 1\$'' 100 times to harm victim & Embed UID or timestamp in every packet before signing
 \end{tabular}
@@ -82,16 +82,173 @@ Both SSL and TLS support above protection. When using SSL, authentication has to
 
 \paragraph{HMAC} MAC using hash functions (MD5, SHA, ....) \\ \emph{Advantages:} fast, source code free and available, no patents or export restrictions
 \dm{
-HMAC(K, M) = f_h(K' \text{ XOR } opad + f_{h}(K' \text{ XOR } ipad + M))
+\text{HMAC}(K, M) = f_h(K' \text{ XOR } opad + f_{h}(K' \text{ XOR } ipad + M))
 }
+$K'$ = key padded with 0x0's, $opad$ = 0x5C, ipad = 0x36 (all padded to length 64 bytes)
 
 \paragraph{VPN Security:} Encryption must be combined with authentication (HMAC), randomized Initialization Vectors (IVs), replay protection
 
-\paragraph{TLS:} Transport Layer Security. Provides communications privacy, prevents eavesdropping, tampering, or message forgery by: authentication (using public key certificates), encryption, data integrity
+\subsection{TLS}
 
-\textbf{Handshake Protocol:} executed before the appl. protocol transmits or receives any data, negotiation of encryption MAC and compression algo. and cryptographic keys. After TLS handshake procedure finished transmitted appl. data is encrypted and server and optionally client are authenticated. (Client encrypts secret with public key, server decrypts with private key $\to$ master secret)
+Transport Layer Security. Provides communications privacy, prevents eavesdropping, tampering, or message forgery by: authentication (using public key certificates), encryption, data integrity.
 
-\textbf{Server authentication:} done via X.509 Server Public Key Certificates. Trusted Certificate Authority (CA) signs cert. with private key, client browsers get the CA's public key.\\
+\pgra{Goal:} perform secure e-commerce (banking, shopping, web login e.g. gmail)
+
+\pgra{Diffie-Hellman key exchange:} establishes a shared secret that can be used for secret communications by exchanging data over an insecure channel. The simplest,  implementation of the protocol uses the multiplicative group of integers modulo $p$, where $p$ is prime and $g$ is primitive root mod $p$.
+
+\begin{tabular}{ccc|c}
+\multicolumn{1}{c}{\textbf{Alice:} secret $a$} & &  \multicolumn{1}{c}{\textbf{Bob:} secret $b$} & \\
+Calculates & Sends & Calculates & Public \\
+\hline
+\hline
+ & $p$, $g\to$ & & $p$, $g$ \\
+$g^a$ mod $p$ = A & $A\to$ & & $p$, $g$, $A$ \\
+ & $\leftarrow B$ &$g^b$ mod $p$ = B & $p$, $g$, $A$, $B$ \\
+ $B^a$ mod $p = \mathbf{s}$ & & $A^b$ mod $p = \mathbf{s}$ & $p$, $g$, $A$, $B$ \\
+\end{tabular}
+
+where $\mathbf{s}$ is the established secret $\Rightarrow$ color-mixing example.
+
+\pgra{Man-in-the-middle on DH:} DH is susceptible to a MitM attack when certificates aren't used. Attacker situates themselves between A and B and impersonates A to B and B to A. Certs can be used to prevent DH MitM.
+
+\textbf{SSL/TLS Protocol}\\
+\includegraphics[width=7cm]{images/SSLProtocol}
+
+\pgra{Phase 1:} Establish security capabilities.\\
+{client,server}\_hello\_message containing: highest supported version, random = 32bit timestamp | 28 bytes rand, session ID, client\_hello: supported cihper suite in decreasing order of preference, server\_hello: chosen cipher.
+
+\textbf{Potential attack:} "dumbing down" - MitM removes strong ciphers from client\_hello, prevention: HMAC in Phase 4
+
+\pgra{Cipher specs}
+\bitem{
+\item Cipher algorithm (RC4, RC2, DES, 3DES, DES40, IDEA, AES, Camellia)
+\item MAC Algorithm (MD5, SHA-1, SHA-256)
+\item Cipher type (stream or block)
+\item Is exportable (true/false)
+\item Hash size (0 or 16 for MD5, 20 for SHA-1, 32 for SHA-256)
+}
+
+Minimum no. of bits for symm. crypto: 80, 128 is better - should be secure until 2040.
+
+\pgra{Key Exchange Mechanisms Analysis Metrics:}
+\bitem{
+\item Secure against passive attacker?
+\item Secure against MitM attacker?
+\item Perfect Forward Secrecy: Compromise of lont-term private key does not reveal session key
+\item Contributory key agreement: Both parties contribute to session key, no party can fully determine session key
+}
+
+\textbf{RSA Key Exchange (Case 1)}
+\bitem{
+\item Server has RSA key than can encrypt
+\item Client creates pre-master secret session key and sends it to server encrypted with server's public RSA key $K_S$
+\item Phase 2\&3 Messages
+\bitem{
+	\item S $\rightarrow$ C: Server cert $\left\{\text{URL}, K_S\right\}_{K_{CA}^{-1}}$
+	\item S $\rightarrow$ C: server\_hello\_done
+	\item C $\rightarrow$ S: client\_key\_exchange: $\left\{K\right\}_{K_S}$
+	}
+\item Metrics: Secure against passive and active attacks, no PFS, no contributory key agreement
+}
+
+\pgra{RSA Key Exchange (Case 2)}
+\bitem{
+\item Server has RSA key that can sign but not encrypt (trick: generate temporary public/private keypair $K'_S/K'^{-1}_{S}$)
+\item Phase 2\&3 messages:
+\bitem{
+	\item S $\rightarrow$ C: Server cert $\left\{ \text{URL}, K_S\right\}_{K_{CA}^{-1}}$
+	\item S $\rightarrow$ C: Server key exchange $\left\{\text{URL}, K'_S\right\}_{K_{S}^{-1}}$
+	\item S $\rightarrow$ C: server\_hello\_done
+	\item C $\rightarrow$ S: client\_key\_exchange $\left\{K\right\}_{K'_S}$
+	}
+\item Metrics: Secure against passive and active attacks, PFS, no contributory key agreement
+}
+
+\pgra{Fixed DH Key Exchange}
+\bitem{
+\item Server has DH certificate
+\item Phase 2\&3 messages
+\bitem{
+	\item S $\rightarrow$ C: Server cert $\left\{ \text{URL}, g^S\mod p \right\}_{K_{CA}^{-1}}$
+	\item S $\rightarrow$ C: server\_hello\_done
+	\item C $\rightarrow$ S: client\_key\_exchange $g^C \mod p$
+	}
+\item Metrics: Secure against passive and active attacks, no PFS, contributory key agreement
+}
+
+\pgra{Ephemeral DH Key Exchange}
+\bitem{
+\item Server has certificate for RSA signing key
+\item Phase 2\&3 messages:
+\bitem{
+	\item S $\rightarrow$ C: Server cert $\left\{\text{URL}, K_S\right\}_{K_{CA}^{-1}}$
+	\item S $\rightarrow$ C: Server key exchange: $g, p, g^S, \left\{g^s\right\}_{K_S^{-1}}$
+	\item S $\rightarrow$ C: server\_hello\_done
+	\item C $\rightarrow$ S: client\_key\_exchange: $g^C \mod p$
+}
+\item Metrics: Secure against passive and active attacks, PFS, contributory key agreement
+}
+
+\pgra{Anonymous DH Key Exchange}
+\bitem{
+\item No certificates
+\item Phase 2\&3 messages:
+\bitem{
+	\item S $\rightarrow$ C: Server key exchange: $g,p, g^S \mod p$
+	\item S $\rightarrow$ C: server\_hello\_done
+	\item C $\rightarrow$ S: client\_key\_exchange: $g^C \mod p$
+	}
+\item Metrics: Secure against passive attacks, not secure against MitM, PFS, Contributory key agreement
+}
+
+\pgra{SSL Phase 2}
+\bitem{
+\item After Phase 1, both parties know which key exchange mechanism and cipher to use
+\item Phase 2: server authentication and key exchange
+}
+
+\pgra{SSL Phase 3}
+\bitem{
+\item After Phase 2, client has required values to generate session key
+\item Phase 3: client authentication and key exchange
+}
+\pgra{SSL Phase 4}
+\bitem{
+\item After Phase 3, client and server share master secret and authenticate each other
+\item Phase 4 contains HMAC of master\_secret and handshake messages
+}
+
+\pgra{Cryptographic computations:} Master secret computed from pre-master secret, client random and server random. Master secret is then used with a PRNG function to produce a pseudorandom bitstream.
+
+\pgra{Studies on SSL indicators}
+\bitem{
+\item $\approx 50\%$ cannot identify connection as secure or not
+\item $85\%$ know about lock icon, $65\%$ know it should be part of browser (not in page)
+\item $65\%$ never noticed https prefix
+\item $23\%$ rely solely on webpage content to determine legitimacy
+\item $9\%$ look at certificate
+}
+
+\pgra{Certificate Revocation:} mechanism to invalidate certificates (e.g. after private key exposed, employee leaves corporation, expiration time too far in future). CAs periodically publish Certificate Revocation Lists (CRLs), delta CRLs only contain changes (what if CRL update missed?). General problem with revocation: CAP theorem (Consistency, Availability, tolerance to Partition) - impossible to acheive all 3.
+
+\pgra{OCSP:} Online Certificate Status Protocol to verify cert. status, ensure cert. valid and not revoked (cert. contains OCSP responder). Issues: falsified cert. would use own server as OCSP, browser doesn't want to fail should OCSP server not respond/be blocked.
+
+\pgra{Compelled Certificates:} Governments allowed to perform active MitM attacks. Cert. issued with signing rights, used in a MitM device to create new cert. for pages on-the-fly. Dangers: devices with compelled certs. being stolen.
+
+\pgra{SSL/TLS PKI Statistics:} 1482 certs. trusted by Microsoft/Mozilla, 1167 distinct ``issuer'' strings, 651 organisations. 16.2M IPs listening on port 443, 11.3M start SSL handshake, 4.3M used valid cert. chains, 1.5M distinct valid leaves.
+
+\pgra{Assumptions for Secure SSL:}
+\bitem{
+\item CA: (no CA root key compromised, no employee of any CA can issue bogus cert. All CAs thoroughly verify owner of domain)
+\item Crypto: (all crypto algorithms are ``secure'')
+\item Browser: (all root certs. in browser correct, browser doesn't contain remotely explotable vulnerabilities, malicous sites cannot overwrite lock/https, no unicode/homograph vulnerability)
+\item User: (checks for https and closed lock, cannot be tricked into bogus URL, does not accept bogus cert., does not ignore cert. warnings)
+}
+If any of these does not hold, SSL not secure!
+
+\pgra{Handshake Protocol:} executed before the appl. protocol transmits or receives any data, negotiation of encryption MAC and compression algo. and cryptographic keys. After TLS handshake procedure finished transmitted appl. data is encrypted and server and optionally client are authenticated. (Client encrypts secret with public key, server decrypts with private key $\to$ master secret)
+
+\pgra{Server authentication:} done via X.509 Server Public Key Certificates. Trusted Certificate Authority (CA) signs cert. with private key, client browsers get the CA's public key.\\
 Upon TLS secured site visit: browser checks\\ {\tt hash(certificate) == decrypt(public key, signature)}.\\
 Server needs (a) the CA-signed TLS certificate (b) its corresponding private key.
 
@@ -130,16 +287,16 @@ Revocation status verification
 \subsection{SSH}
 
 \paragraph{Definition:} standard for remote logins and encrypted file transfer, provides secure command shell, secure file transfer, data tunneling, fully negotiable. 
-\\Three protocols: SSH-TRANS, SSH-AUTH, SSH-CONN
+\\Three protocols: \textbf{SSH-TRANS}, \textbf{SSH-AUTH}, \textbf{SSH-CONN}
 
-\paragraph{SSH-TRANS:} fundamental SSH building block, runs over TCP. Provides: algorithm negotiation, key exchange (Diffie-Hellman) (repeated every h/Gb), Session ID, server authentication, encryption, integrity, data compression
+\paragraph{SSH-TRANS:} fundamental SSH building block, runs over TCP. Provides: algorithm negotiation, key exchange (Diffie-Hellman) (repeated every h/Gb), Session ID, server authentication, encryption, integrity, data compression. All parameters are negotiable (security implications).
 
 \paragraph{SSH-AUTH:} used over SSH-TRANS to authenticate client \\
 Provides: framework for authentication mechanisms\\
 Authentication request is client driven, contains: username U, method name M and method specific data D, Service name S (facility to which client requests access)
 \textbf{Authentication Methods}
 \begin{itemize}
-\item Public-key user authentication
+\item Public-key user authentication (test if use has access, perform authentication)
 \item Password authentication (SSH-CONN encrypts) 
 \item Host based authentication\\
 \quad User authentication: responsibility with client host\\

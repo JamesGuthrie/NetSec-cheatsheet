@@ -1,17 +1,4 @@
-\pgra{Diffie-Hellman key exchange:} establishes a shared secret that can be used for secret communications by exchanging data over an insecure channel. The simplest,  implementation of the protocol uses the multiplicative group of integers modulo $p$, where $p$ is prime and $g$ is primitive root mod $p$.
 
-\begin{tabular}{ccc|c}
-\multicolumn{1}{c}{\textbf{Alice:} secret $a$} & &  \multicolumn{1}{c}{\textbf{Bob:} secret $b$} & \\
-Calculates & Sends & Calculates & Public \\
-\hline
-\hline
- & $p$, $g\to$ & & $p$, $g$ \\
-$g^a$ mod $p$ = A & $A\to$ & & $p$, $g$, $A$ \\
- & $\leftarrow B$ &$g^b$ mod $p$ = B & $p$, $g$, $A$, $B$ \\
- $B^a$ mod $p = \mathbf{s}$ & & $A^b$ mod $p = \mathbf{s}$ & $p$, $g$, $A$, $B$ \\
-\end{tabular}
-
-where $\mathbf{s}$ is the established secret $\Rightarrow$ color-mixing example.
 
 \subs{Quiz answers} 
  
