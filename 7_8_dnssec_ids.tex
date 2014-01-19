@@ -222,4 +222,12 @@ Reduces the chances to $656:1$. The TTL only stops repeated races for the same n
 
 \pgra{DNS Root Server Security:} Major operational threat is DDoS $\to$ Defense: Anycast: Setting up identical copies of existing servers (same data), e.g. 42 servers behind {\tt f-root}
 
-\pgra{DNSSEC:} DNSSEC validates that DNS data came from correct originator and that it was put into the DNS by the originator (authenticity and integrity, no confidentiality). Each zone signs their data with their private key. Queries answered with requested information and DNSSEC data. User check responses for authenticity with public keys.
+\pgra{DNSSEC:} DNSSEC validates that DNS data came from correct originator and that it was put into the DNS by the originator (authenticity and integrity, no confidentiality). Each zone signs their data (including hash of public key for all domains for which it is authoritative) with their private key. Queries answered with requested information and DNSSEC data. User check responses for authenticity with public keys.
+
+\pgra{DNSSEC Resource Records:}
+\bitem{
+\item RRSIG signature over RRset using private key
+\item DNSKEY public key, used to verify sig. of RRset
+\item NSEC (next secure record) RR which indicated which RRset is next in the zone. Used to authenticate non-existence of records
+\item DS (Delegation Signer) contains the hash of the key one level up which was used to sign the public key of this zone
+}
